@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Auraa Movies</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #3a002a, #0c001c);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .iframe-container {
+      width: 90%;
+      height: 85%;
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(255, 126, 229, 0.4);
+      background: #1a001f;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 20px;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #c02c8f;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 24px;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(192, 44, 143, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: #ff7ce5;
+      color: black;
+    }
+
+    #loadingMsg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #ff85e1;
+      z-index: 5;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 133, 225, 0.3);
+    }
+  </style>
+
+  <!-- Ultraviolet -->
+  <script src="/active/uv/uv.config.js"></script>
+  <script src="/active/uv/uv.bundle.js"></script>
+</head>
+<body>
+  <div class="iframe-container">
+    <button class="back-button" onclick="location.replace('index.html')">← Back to Auraa</button>
+    <div id="loadingMsg">Loading movies...</div>
+    <iframe id="movieFrame" allowfullscreen></iframe>
+  </div>
+
+  <script>
+    async function initMovies() {
+      if (!navigator.serviceWorker.controller) {
+        try {
+          await navigator.serviceWorker.register('/active/uv/uv.sw.js', { scope: '/active/go/' });
+          location.reload();
+          return;
+        } catch (err) {
+          console.error("Service Worker registration failed:", err);
+          document.getElementById("loadingMsg").innerText = "Failed to load service worker.";
+          return;
+        }
+      }
+
+      const waitForUV = () => {
+        if (typeof __uv$config !== "undefined" && typeof __uv$config.encodeUrl === "function") {
+          const encoded = __uv$config.encodeUrl("https://movies.waves.lat");
+          document.getElementById("movieFrame").src = __uv$config.prefix + encoded;
+          document.getElementById("loadingMsg").style.display = "none";
+        } else {
+          setTimeout(waitForUV, 100);
+        }
+      };
+
+      waitForUV();
+    }
+
+    window.addEventListener("load", initMovies);
+  </script>
+</body>
+</html>

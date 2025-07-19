@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auraa AI</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #3a002a, #0c001c);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff7ce5, #c02c8f);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(25, 25, 25, 0.7);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(192, 44, 143, 0.4);
+      border: 1px solid rgba(192, 44, 143, 0.3);
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      max-width: 80%;
+      position: relative;
+      word-wrap: break-word;
+    }
+
+    .message.user {
+      margin-left: auto;
+      justify-content: flex-end;
+    }
+
+    .message.ai {
+      margin-right: auto;
+      justify-content: flex-start;
+    }
+
+    .bubble {
+      padding: 12px 16px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    .user .bubble {
+      background-color: rgba(255, 124, 229, 0.2);
+      border-bottom-right-radius: 4px;
+      border: 1px solid rgba(255, 124, 229, 0.2);
+      box-shadow: 0 0 8px rgba(192, 44, 143, 0.2);
+    }
+
+    .ai .bubble {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-bottom-left-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .bubble pre, .bubble code {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      margin: 8px 0;
+    }
+
+    .bubble code {
+      padding: 2px 4px;
+    }
+
+    .message-actions {
+      display: none;
+      gap: 5px;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .message:hover .message-actions {
+      display: flex;
+    }
+
+    .action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 124, 229, 0.1);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background-color: rgba(255, 124, 229, 0.3);
+      transform: scale(1.1);
+    }
+
+    .typing-indicator {
+      display: flex;
+      padding: 12px 16px;
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      margin-bottom: 15px;
+      width: fit-content;
+      color: #fff;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #ff7ce5;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingAnimation {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-5px); }
+    }
+
+    .input-container {
+      padding: 5px;
+      position: relative;
+      margin-bottom: 5px;
+      background-color: rgba(25, 25, 25, 0.8);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 124, 229, 0.2);
+      min-height: 70px;
+    }
+
+    .input-container select {
+      position: absolute;
+      top: 8px;
+      right: 60px;
+      background: rgba(255, 124, 229, 0.2);
+      color: white;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      appearance: none;
+      cursor: pointer;
+      border: none;
+    }
+
+    .input-container textarea {
+      width: 100%;
+      background-color: transparent;
+      border: none;
+      padding: 12px 60px 12px 16px;
+      color: white;
+      font-size: 0.95rem;
+      resize: none;
+      min-height: 56px;
+      max-height: 200px;
+      outline: none;
+    }
+
+    .input-container button {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      background: #c02c8f;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .input-container button:hover {
+      background: #ff7ce5;
+      transform: translateY(-2px);
+    }
+
+    .chatgpt-logo {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      z-index: 100;
+      filter: drop-shadow(0 0 2px #ff85e1);
+      transition: filter 0.3s ease;
+    }
+
+    .chatgpt-logo:hover {
+      filter: drop-shadow(0 0 5px #ff85e1);
+    }
+
+    .terms-notice {
+      font-size: 0.8rem;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+
+    .terms-notice a {
+      color: #ffb3ec;
+      text-decoration: none;
+    }
+
+    .terms-notice a:hover {
+      text-shadow: 0 0 5px #ff7ce5;
+    }
+  </style>
+</head>
+<body>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/5968/5968350.png"
+    alt="Python Logo"
+    class="chatgpt-logo"
+    title="Back to Home"
+    onclick="window.top.location.href = 'index.html';"
+  />
+  <div class="container">
+    <h1 class="title">Auraa AI</h1>
+    <div class="chat-container" id="chat-box">
+      <div class="message ai">
+        <div class="bubble">Welcome to Auraa AI! How can I help you today?</div>
+        <div class="message-actions">
+          <button class="action-btn copy-btn" title="Copy"><i class="bi bi-clipboard"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="input-container">
+      <select id="model-selector" title="Choose model">
+        <option value="llama3-8b-8192">LLaMA 3 - 8B</option>
+        <option value="llama3-70b-8192">LLaMA 3 - 70B</option>
+        <option value="mixtral-8x7b-32768">Mixtral 8x7B</option>
+      </select>
+      <textarea id="user-input" placeholder="Ask Auraa AI..."></textarea>
+      <button id="send-btn" title="Send"><i class="bi bi-send-fill"></i></button>
+    </div>
+    <div class="terms-notice">
+      By using Auraa AI, you agree to the <a href="/termsofuse">Terms of Use</a> and <a href="/tidepolicy">Privacy Policy</a>.
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = "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";
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const sendButton = document.getElementById("send-btn");
+
+    function renderMessage(text) {
+      return DOMPurify.sanitize(text);
+    }
+
+    function addMessage(text, sender = "user") {
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message", sender);
+      const bubbleDiv = document.createElement("div");
+      bubbleDiv.classList.add("bubble");
+      bubbleDiv.innerHTML = renderMessage(text);
+      messageDiv.appendChild(bubbleDiv);
+      const actionsDiv = document.createElement("div");
+      actionsDiv.className = "message-actions";
+      const copyBtn = document.createElement("button");
+      copyBtn.className = "action-btn copy-btn";
+      copyBtn.title = "Copy";
+      copyBtn.innerHTML = '<i class="bi bi-clipboard"></i>';
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(bubbleDiv.textContent || bubbleDiv.innerText);
+        copyBtn.innerHTML = '<i class="bi bi-check-lg"></i>';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="bi bi-clipboard"></i>';
+        }, 2000);
+      };
+      actionsDiv.appendChild(copyBtn);
+      messageDiv.appendChild(actionsDiv);
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "message ai typing";
+      typingDiv.innerHTML = `
+        <div class="bubble typing-indicator">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+        </div>`;
+      chatBox.appendChild(typingDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return typingDiv;
+    }
+
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+      addMessage(text, "user"); userInput.value = ""; userInput.focus();
+
+      const typingIndicator = showTypingIndicator();
+      const model = document.getElementById("model-selector").value;
+
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({
+            model,
+            messages: [{ role: "user", content: text }]
+          })
+        });
+
+        const data = await response.json();
+        typingIndicator.remove();
+
+        if (!response.ok || !data.choices) {
+          throw new Error(data.error?.message || "Unknown error");
+        }
+
+        addMessage(data.choices[0].message.content, "ai");
+      } catch (error) {
+        typingIndicator.remove();
+        addMessage("⚠️ Error: " + error.message, "ai");
+      }
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+    userInput.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
