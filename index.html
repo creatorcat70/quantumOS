@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>Ruby</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com"/>
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
 	<style>
 		*{margin:0;padding:0;box-sizing:border-box}
 		body{font-family:'Inter',sans-serif;background:radial-gradient(circle at 20% 80%,rgba(220,38,127,.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(185,28,28,.4) 0%,transparent 50%),linear-gradient(135deg,#0a0000 0%,#800000 100%);color:#fff;height:100vh;overflow:hidden;animation:bg 8s ease-in-out infinite alternate}
@@ -42,20 +42,20 @@
 		.new-tab-btn:hover{background:linear-gradient(135deg,rgba(220,38,127,.5),rgba(185,28,28,.5));color:white;transform:scale(1.02)}
 		.browser-actions{display:flex;align-items:center;gap:8px;padding:10px 20px;border-top:1px solid rgba(220,38,127,.2)}
 		.topBar{position:fixed;top:0;left:350px;right:0;height:60px;background:linear-gradient(135deg,rgba(15,0,0,.95),rgba(30,0,0,.95));backdrop-filter:blur(20px);border-bottom:1px solid rgba(220,38,127,.3);display:flex;align-items:center;padding:0 20px;gap:15px;z-index:998}
-		#searchForm{display:flex;align-items:center;gap:15px;flex:1;min-width:400px}
-		#urlInput{padding:12px 20px;font-size:14px;border:none;border-radius:30px;background:linear-gradient(135deg,rgba(220,38,127,.2),rgba(185,28,28,.2));backdrop-filter:blur(10px);border:1px solid rgba(220,38,127,.3);color:white;width:100%;min-width:250px;transition:all .3s ease;font-weight:500}
+		#searchForm{display:flex;align-items:center;gap:15px;flex:1;max-width:500px}
+		#urlInput{padding:12px 20px;font-size:14px;border:none;border-radius:30px;background:linear-gradient(135deg,rgba(220,38,127,.2),rgba(185,28,28,.2));backdrop-filter:blur(10px);border:1px solid rgba(220,38,127,.3);color:white;flex:1;transition:all .3s ease;font-weight:500}
 		#urlInput:focus{outline:none;border-color:rgba(220,38,127,.6);box-shadow:0 0 25px rgba(220,38,127,.4);background:linear-gradient(135deg,rgba(220,38,127,.3),rgba(185,28,28,.3));transform:scale(1.02)}
 		#urlInput::placeholder{color:rgba(255,255,255,.7);font-weight:400}
-		.search-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border:none;border-radius:25px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 15px rgba(220,38,127,.3);display:flex;align-items:center;gap:8px;flex-shrink:0}
+		.search-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);color:white;border:none;border-radius:25px;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 15px rgba(220,38,127,.3);display:flex;align-items:center;gap:8px}
 		.search-btn:hover{background:linear-gradient(135deg,#b91c1c,#991b1b);transform:translateY(-2px);box-shadow:0 6px 25px rgba(220,38,127,.4)}
-		.navControls{display:flex;gap:8px;flex-shrink:0}
+		.navControls{display:flex;gap:8px}
 		.navBtn,.homeBtn{background:linear-gradient(135deg,rgba(220,38,127,.3),rgba(185,28,28,.3));border:1px solid rgba(220,38,127,.4);color:#ef4444;border-radius:8px;padding:8px 12px;font-size:14px;cursor:pointer;transition:all .3s ease}
 		.navBtn:hover,.homeBtn:hover{background:linear-gradient(135deg,rgba(220,38,127,.5),rgba(185,28,28,.5));color:white;transform:translateY(-1px)}
-		.content-area{position:fixed;top:60px;left:350px;right:0;bottom:30px;background:rgba(0,0,0,.1);overflow:hidden}
+		.content-area{position:fixed;top:60px;left:350px;right:0;bottom:0;background:rgba(0,0,0,.1)}
 		.tab-content{display:none;width:100%;height:100%;position:relative}
 		.tab-content.active{display:block}
-		.tab-content iframe{width:100%;height:100%;border:none;background:white;display:block;position:absolute;top:0;left:0;right:0;bottom:0}
-		.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;width:100%;text-align:center;background:radial-gradient(ellipse at center,rgba(220,38,127,.15),transparent 60%);position:absolute;top:0;left:0;right:0;bottom:0}
+		.tab-content iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:white}
+		.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;background:radial-gradient(ellipse at center,rgba(220,38,127,.15),transparent 60%);position:relative}
 		.welcome-screen::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.03) 50%,transparent 70%);animation:shimmer 3s ease-in-out infinite}
 		@keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
 		.welcome-title{font-size:72px;font-weight:700;background:linear-gradient(135deg,#dc2626,#ef4444,#f87171,#fca5a5);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 0 30px rgba(220,38,127,.5);margin-bottom:20px;animation:glow 4s ease-in-out infinite alternate,float 6s ease-in-out infinite;position:relative;z-index:2}
@@ -63,7 +63,6 @@
 		@keyframes float{0%,100%{transform:translateY(0px)}50%{transform:translateY(-10px)}}
 		.welcome-subtitle{font-size:20px;color:#fca5a5;margin-bottom:40px;opacity:.9;animation:pulse 3s ease-in-out infinite;position:relative;z-index:2}
 		@keyframes pulse{0%,100%{opacity:.9;transform:scale(1)}50%{opacity:1;transform:scale(1.02)}}
-		.footer{position:fixed;bottom:0;left:350px;right:0;height:30px;background:linear-gradient(135deg,rgba(15,0,0,.95),rgba(30,0,0,.95));backdrop-filter:blur(20px);border-top:1px solid rgba(220,38,127,.3);display:flex;align-items:center;justify-content:center;font-size:12px;color:#ef4444;z-index:998;font-weight:500}
 		::-webkit-scrollbar{width:8px}
 		::-webkit-scrollbar-track{background:rgba(0,0,0,.3)}
 		::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#dc2626,#b91c1c);border-radius:4px}
@@ -85,7 +84,6 @@
 			<div id="time">⌚</div>
 		</div>
 	</div>
-
 	<div class="tabs-sidebar">
 		<div class="tabs-header">
 			<div class="tabs-title"><i class="bi bi-collection"></i>Tabs</div>
@@ -95,10 +93,9 @@
 			<button class="new-tab-btn" onclick="createNewTab()"><i class="bi bi-plus"></i>New Tab</button>
 		</div>
 	</div>
-
 	<div class="topBar">
 		<form id="searchForm">
-			<input type="text" id="urlInput" placeholder="Search Ruby or enter URL..." autocomplete="off">
+			<input type="text" id="urlInput" placeholder="Search Ruby or enter URL..." autocomplete="off"/>
 			<button type="submit" class="search-btn"><i class="bi bi-search"></i>Search</button>
 		</form>
 		<div class="navControls">
@@ -108,32 +105,28 @@
 			<button class="homeBtn" onclick="goHome()" title="Home"><i class="bi bi-house"></i></button>
 		</div>
 	</div>
-
 	<div class="content-area">
 		<div id="tab-contents"></div>
 	</div>
-
-	<div class="footer">Ruby | Quantum Services - Advanced Proxy Browser</div>
-
 	<script src="/active/uv/uv.bundle.js" defer></script>
 	<script src="/active/uv/uv.config.js" defer></script>
 	<script src="/assets/js/register.js" defer></script>
 	<script>
-let tabs=[],activeTabId=null,tabCounter=0;
-function createNewTab(url=null,title='New Tab'){const tabId=`tab-${++tabCounter}`,tab={id:tabId,title:title,url:url,isHome:!url};tabs.push(tab);renderTabs();createTabContent(tabId);switchToTab(tabId);if(url)loadUrlInTab(tabId,url);return tabId}
-function closeTab(tabId){const i=tabs.findIndex(t=>t.id===tabId);if(i===-1)return;tabs.splice(i,1);const c=document.getElementById(`content-${tabId}`);if(c)c.remove();if(tabs.length===0)createNewTab();else if(activeTabId===tabId)switchToTab(tabs[Math.min(i,tabs.length-1)].id);renderTabs()}
-function switchToTab(tabId){document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));const c=document.getElementById(`content-${tabId}`);if(c)c.classList.add('active');activeTabId=tabId;renderTabs()}
-function renderTabs(){const l=document.getElementById('tabs-list');l.innerHTML='';tabs.forEach(t=>{const e=document.createElement('div');e.className=`side-tab ${t.id===activeTabId?'active':''}`;const f=t.url?t.url.charAt(0).toUpperCase():'R',dt=t.title.length>25?t.title.substring(0,25)+'...':t.title,du=t.url?(t.url.length>35?t.url.substring(0,35)+'...':t.url):'Ruby Home';e.innerHTML=`<div class="tab-favicon">${f}</div><div class="tab-info"><div class="tab-title">${dt}</div><div class="tab-url">${du}</div></div><button class="tab-close" onclick="event.stopPropagation();closeTab('${t.id}')"><i class="bi bi-x"></i></button>`;e.onclick=e=>{if(!e.target.closest('.tab-close'))switchToTab(t.id)};l.appendChild(e)})}
-function createTabContent(tabId){const c=document.getElementById('tab-contents'),t=document.createElement('div'),tab=tabs.find(t=>t.id===tabId);t.id=`content-${tabId}`;t.className='tab-content';tab.isHome?t.innerHTML='<div class="welcome-screen"><h1 class="welcome-title">Ruby</h1><p class="welcome-subtitle">Advanced Proxy Browser with Multi-Tab Support</p></div>':t.innerHTML='<iframe title="Ruby Proxy View"></iframe>';c.appendChild(t)}
-function loadUrlInTab(tabId,url){const c=document.getElementById(`content-${tabId}`);if(!c)return;console.log("Loading in tab:",tabId,url);c.innerHTML=`<iframe title="Ruby Proxy View" src="${url}" onload="console.log('Iframe loaded:',this.src)" onerror="console.log('Iframe error:',this.src)"></iframe>`;const t=tabs.find(t=>t.id===tabId);if(t){t.isHome=false;t.url=url;renderTabs()}}
-function updateTabTitle(tabId,title){const t=tabs.find(t=>t.id===tabId);if(t){t.title=title.length>20?title.substring(0,20)+'...':title;renderTabs()}}
-function generateURL(q){return `https://duckduckgo.com/?q=${encodeURIComponent(q)}`}
-function isURL(i){try{const u=new URL(i.includes("://")?i:"https://"+i);return u.hostname.includes(".")}catch{return false}}
-function searchHandler(e){e.preventDefault();const i=document.getElementById("urlInput"),v=i.value.trim();if(!v)return;let f="",t="";if(isURL(v)){const u=v.includes("://")?v:"https://"+v;if(typeof __uv$config!=="undefined"){f=__uv$config.prefix+__uv$config.encodeUrl(u)}else{f=u}t=new URL(u).hostname}else{const searchUrl=generateURL(v);if(typeof __uv$config!=="undefined"){f=__uv$config.prefix+__uv$config.encodeUrl(searchUrl)}else{f=searchUrl}t=`Search: ${v}`}console.log("Loading URL:",f);if(!activeTabId||tabs.find(t=>t.id===activeTabId).isHome)createNewTab(f,t);else{loadUrlInTab(activeTabId,f);updateTabTitle(activeTabId,t)}i.value=""}
-function loadPage(p){const t=p.split('.')[0].charAt(0).toUpperCase()+p.split('.')[0].slice(1);if(!activeTabId||tabs.find(t=>t.id===activeTabId).isHome)createNewTab(p,t);else{loadUrlInTab(activeTabId,p);updateTabTitle(activeTabId,t)}}
-function goHome(){if(activeTabId){const c=document.getElementById(`content-${activeTabId}`);if(c){c.innerHTML='<div class="welcome-screen"><h1 class="welcome-title">Ruby</h1><p class="welcome-subtitle">Advanced Proxy Browser with Multi-Tab Support</p></div>';const t=tabs.find(t=>t.id===activeTabId);if(t){t.isHome=true;t.title='Home';t.url=null}renderTabs()}}}
-function waitForUVConfig(cb){typeof __uv$config!=="undefined"?cb():setTimeout(()=>waitForUVConfig(cb),50)}
-window.onload=function(){createNewTab();if(navigator.getBattery)navigator.getBattery().then(b=>{function u(){document.getElementById("battery").textContent=`${Math.round(b.level*100)}%`}u();b.addEventListener("levelchange",u)});function updateTime(){document.getElementById("time").textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}setInterval(updateTime,1000);updateTime();document.getElementById("searchForm").addEventListener("submit",searchHandler);document.getElementById("backBtn").onclick=()=>{if(activeTabId){const i=document.querySelector(`#content-${activeTabId} iframe`);if(i)try{i.contentWindow.history.back()}catch{}}};document.getElementById("forwardBtn").onclick=()=>{if(activeTabId){const i=document.querySelector(`#content-${activeTabId} iframe`);if(i)try{i.contentWindow.history.forward()}catch{}}};document.getElementById("refreshBtn").onclick=()=>{if(activeTabId){const i=document.querySelector(`#content-${activeTabId} iframe`);if(i)try{i.contentWindow.location.reload()}catch{}}}}
+		let tabs=[],activeTabId=null,tabCounter=0;
+		function createNewTab(url=null,title='New Tab'){const tabId=`tab-${++tabCounter}`;const tab={id:tabId,title:title,url:url,isHome:!url};tabs.push(tab);renderTabs();createTabContent(tabId);switchToTab(tabId);if(url)loadUrlInTab(tabId,url);return tabId;}
+		function closeTab(tabId){const tabIndex=tabs.findIndex(t=>t.id===tabId);if(tabIndex===-1)return;tabs.splice(tabIndex,1);document.getElementById(`content-${tabId}`).remove();if(tabs.length===0)createNewTab();else if(activeTabId===tabId){const newActiveIndex=Math.min(tabIndex,tabs.length-1);switchToTab(tabs[newActiveIndex].id);}renderTabs();}
+		function switchToTab(tabId){document.querySelectorAll('.tab-content').forEach(content=>content.classList.remove('active'));const tabContent=document.getElementById(`content-${tabId}`);if(tabContent)tabContent.classList.add('active');activeTabId=tabId;renderTabs();}
+		function renderTabs(){const tabsList=document.getElementById('tabs-list');tabsList.innerHTML='';tabs.forEach(tab=>{const tabElement=document.createElement('div');tabElement.className=`side-tab ${tab.id===activeTabId?'active':''}`;const favicon=tab.url?tab.url.charAt(0).toUpperCase():'R';const displayTitle=tab.title.length>25?tab.title.substring(0,25)+'...':tab.title;const displayUrl=tab.url?(tab.url.length>35?tab.url.substring(0,35)+'...':tab.url):'Ruby Home';tabElement.innerHTML=`<div class="tab-favicon">${favicon}</div><div class="tab-info"><div class="tab-title">${displayTitle}</div><div class="tab-url">${displayUrl}</div></div><button class="tab-close" onclick="event.stopPropagation();closeTab('${tab.id}')"><i class="bi bi-x"></i></button>`;tabElement.onclick=e=>{if(!e.target.closest('.tab-close'))switchToTab(tab.id);};tabsList.appendChild(tabElement);});}
+		function createTabContent(tabId){const contentArea=document.getElementById('tab-contents');const tabContent=document.createElement('div');tabContent.id=`content-${tabId}`;tabContent.className='tab-content';const tab=tabs.find(t=>t.id===tabId);if(tab.isHome){tabContent.innerHTML=`<div class="welcome-screen"><h1 class="welcome-title">Ruby</h1><p class="welcome-subtitle">Advanced Proxy Browser with Multi-Tab Support</p></div>`;}else{tabContent.innerHTML=`<iframe title="Ruby Proxy View"></iframe>`;}contentArea.appendChild(tabContent);}
+		function loadUrlInTab(tabId,url){const tabContent=document.getElementById(`content-${tabId}`);const iframe=tabContent.querySelector('iframe');if(iframe){iframe.src=url;const tab=tabs.find(t=>t.id===tabId);if(tab){tab.isHome=false;tab.url=url;}}}
+		function updateTabTitle(tabId,title){const tab=tabs.find(t=>t.id===tabId);if(tab){tab.title=title.length>20?title.substring(0,20)+'...':title;renderTabs();}}
+		function generateURL(query){return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;}
+		function isURL(input){try{const url=new URL(input.includes("://")?input:"https://"+input);return url.hostname.includes(".");}catch{return false;}}
+		function searchHandler(e){e.preventDefault();const input=document.getElementById("urlInput");const value=input.value.trim();if(!value||typeof __uv$config==="undefined")return;let finalUrl="",title="";if(isURL(value)){const fullUrl=value.includes("://")?value:"https://"+value;finalUrl=__uv$config.prefix+__uv$config.encodeUrl(fullUrl);title=new URL(fullUrl).hostname;}else{finalUrl=__uv$config.prefix+__uv$config.encodeUrl(generateURL(value));title=`Search: ${value}`;}if(document.getElementById("blankMode")?.checked){const win=window.open("about:blank","_blank");const iframe=win.document.createElement("iframe");iframe.style="border:none;width:100vw;height:100vh;";iframe.src=finalUrl;win.document.body.style.margin="0";win.document.body.appendChild(iframe);}else{if(!activeTabId||tabs.find(t=>t.id===activeTabId).isHome){createNewTab(finalUrl,title);}else{loadUrlInTab(activeTabId,finalUrl);updateTabTitle(activeTabId,title);}}input.value="";}
+		function loadPage(path){const title=path.split('.')[0].charAt(0).toUpperCase()+path.split('.')[0].slice(1);if(!activeTabId||tabs.find(t=>t.id===activeTabId).isHome){createNewTab(path,title);}else{loadUrlInTab(activeTabId,path);updateTabTitle(activeTabId,title);}}
+		function goHome(){if(activeTabId){const tabContent=document.getElementById(`content-${activeTabId}`);tabContent.innerHTML=`<div class="welcome-screen"><h1 class="welcome-title">Ruby</h1><p class="welcome-subtitle">Advanced Proxy Browser with Multi-Tab Support</p></div>`;const tab=tabs.find(t=>t.id===activeTabId);if(tab){tab.isHome=true;tab.title='Home';tab.url=null;}renderTabs();}}
+		function waitForUVConfig(callback){if(typeof __uv$config!=="undefined")callback();else setTimeout(()=>waitForUVConfig(callback),50);}
+		window.onload=function(){createNewTab();if(navigator.getBattery){navigator.getBattery().then(battery=>{function updateBattery(){document.getElementById("battery").textContent=`${Math.round(battery.level*100)}%`;}updateBattery();battery.addEventListener("levelchange",updateBattery);});}function updateTime(){const now=new Date();document.getElementById("time").textContent=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}setInterval(updateTime,1000);updateTime();waitForUVConfig(()=>{document.getElementById("searchForm").addEventListener("submit",searchHandler);});document.getElementById("backBtn").onclick=()=>{if(activeTabId){const iframe=document.querySelector(`#content-${activeTabId} iframe`);if(iframe)try{iframe.contentWindow.history.back();}catch{}}};document.getElementById("forwardBtn").onclick=()=>{if(activeTabId){const iframe=document.querySelector(`#content-${activeTabId} iframe`);if(iframe)try{iframe.contentWindow.history.forward();}catch{}}};document.getElementById("refreshBtn").onclick=()=>{if(activeTabId){const iframe=document.querySelector(`#content-${activeTabId} iframe`);if(iframe)try{iframe.contentWindow.location.reload();}catch{}}};};
 	</script>
 </body>
 </html>
