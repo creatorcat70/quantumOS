@@ -1,6 +1,6 @@
-# Aura V2
-Forked from [Tide](https://github.com/xXmizzeryXx/Tide) which is made by Mizzery.
-Unlimited aura with this one
+# Ruby
+Forked from [Auraa](https://github.com/creatorcat70/auraa2) which is made by thefakesydney
+The successor to Auraa.
 
 # Disclaimer
 Use this at your own risk. I, thefakesydney/creatorcat70 (github user) , am not liable for anything you do with this. 
@@ -8,4 +8,4 @@ The consequences can be - Let's just say, pretty bad.
 
 ---
 
-# Officially Part of the [Elusion](https://dsc.gg/elusiongoat) family!
+
