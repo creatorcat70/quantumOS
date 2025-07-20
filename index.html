@@ -721,7 +721,7 @@
 	const input = document.getElementById("urlInput");
 	const value = input.value.trim();
 	if (!value || typeof __uv$config === "undefined") return;
-	let finalUrl = "", title = value;
+	let finalUrl = "", title = isURL(value) ? new URL(value.includes("://") ? value : "https://" + value).hostname : `Search: ${value}`;
 	if (isURL(value)) {
 	const fullUrl = value.includes("://") ? value : "https://" + value;
 	finalUrl = __uv$config.prefix + __uv$config.encodeUrl(fullUrl);
