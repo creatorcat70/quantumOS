@@ -445,11 +445,11 @@
 			animation: shimmer 3s ease-in-out infinite
 		}
 
-	#tab-contents {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	}
+		#tab-contents {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
 
 		@keyframes shimmer {
 
@@ -716,37 +716,35 @@
       }catch{return false;}
     }
     
-    function searchHandler(e){
-      e.preventDefault();
-      const input=document.getElementById("urlInput");
-      const value=input.value.trim();
-      if(!value||typeof __uv$config==="undefined")return;
-      let finalUrl="",title="";
-      if(isURL(value)){
-        const fullUrl=value.includes("://")?value:"https://"+value;
-        finalUrl=__uv$config.prefix+__uv$config.encodeUrl(fullUrl);
-        title=new URL(fullUrl).hostname;
-      }else{
-        finalUrl=__uv$config.prefix+__uv$config.encodeUrl(generateURL(value));
-        title=`Search: ${value}`;
-      }
-      if(document.getElementById("blankMode")?.checked){
-        const win=window.open("about:blank","_blank");
-        const iframe=win.document.createElement("iframe");
-        iframe.style="border:none;width:100vw;height:100vh;";
-        iframe.src=finalUrl;
-        win.document.body.style.margin="0";
-        win.document.body.appendChild(iframe);
-      }else{
-        if(!activeTabId||tabs.find(t=>t.id===activeTabId).isHome){
-          createNewTab(finalUrl,title);
-        }else{
-          loadUrlInTab(activeTabId,finalUrl);
-          updateTabTitle(activeTabId,title);
-        }
-      }
-      input.value="";
-    }
+	function searchHandler(e) {
+	e.preventDefault();
+	const input = document.getElementById("urlInput");
+	const value = input.value.trim();
+	if (!value || typeof __uv$config === "undefined") return;
+	let finalUrl = "", title = value;
+	if (isURL(value)) {
+	const fullUrl = value.includes("://") ? value : "https://" + value;
+	finalUrl = __uv$config.prefix + __uv$config.encodeUrl(fullUrl);
+	} else {
+	finalUrl = __uv$config.prefix + __uv$config.encodeUrl(generateURL(value));
+	}
+	if (document.getElementById("blankMode")?.checked) {
+	const win = window.open("about:blank", "_blank");
+	const iframe = win.document.createElement("iframe");
+	iframe.style = "border:none;width:100vw;height:100vh;";
+	iframe.src = finalUrl;
+	win.document.body.style.margin = "0";
+	win.document.body.appendChild(iframe);
+	} else {
+	if (!activeTabId || tabs.find(t => t.id === activeTabId).isHome) {
+	createNewTab(finalUrl, title);
+	} else {
+	loadUrlInTab(activeTabId, finalUrl);
+	updateTabTitle(activeTabId, title);
+	}
+	}
+	input.value = "";
+	}
     
     function loadPage(path){
       const title=path.split('.')[0].charAt(0).toUpperCase()+path.split('.')[0].slice(1);
