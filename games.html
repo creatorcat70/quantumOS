@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Auraa - Games</title>
+  <title>Ruby - Games</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
@@ -11,21 +11,19 @@
       margin: 0;
       padding: 20px;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #3a002a, #0c001c);
+      background: radial-gradient(circle at top left, #600000, #220000);
       color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      animation: flickerBackground 6s infinite ease-in-out;
+      animation: glowPulse 6s infinite ease-in-out;
     }
 
-    @keyframes flickerBackground {
-      0%, 100% { background: linear-gradient(135deg, #3a002a, #0c001c); }
-      10% { background: linear-gradient(135deg, #4a0038, #140033); }
-      25% { background: linear-gradient(135deg, #61004d, #1a0047); }
-      40%, 90% { background: linear-gradient(135deg, #3a002a, #0c001c); }
+    @keyframes glowPulse {
+      0%, 100% { background: radial-gradient(circle at top left, #600000, #220000); }
+      50% { background: radial-gradient(circle at top right, #7c0000, #2a0000); }
     }
 
     .container {
@@ -36,52 +34,51 @@
     }
 
     .title {
-      font-size: 2.7rem;
+      font-size: 3rem;
       font-weight: 700;
-      background: linear-gradient(90deg, #ff7ce5, #c02c8f);
-      background-clip: text;
+      background: linear-gradient(to right, #ff4d4d, #ff0066, #ff1a75);
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 8px #ff7ce5;
-      margin-bottom: 2rem;
+      text-shadow: 0 0 18px #ff1a75;
       user-select: none;
+      margin-bottom: 2rem;
     }
 
     .game-btn {
-      background-color: rgba(255, 124, 229, 0.15);
-      color: white;
+      background: rgba(255, 0, 94, 0.12);
+      color: #fff;
       padding: 15px 30px;
       margin: 10px;
-      border: 1px solid rgba(255, 124, 229, 0.3);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 0, 94, 0.3);
+      border-radius: 14px;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.25s ease;
-      box-shadow: 0 0 10px rgba(255, 124, 229, 0.3);
+      box-shadow: 0 0 14px rgba(255, 0, 94, 0.3);
     }
 
     .game-btn:hover {
-      background-color: rgba(255, 124, 229, 0.3);
-      box-shadow: 0 0 15px rgba(255, 124, 229, 0.6);
+      background: rgba(255, 0, 94, 0.3);
+      box-shadow: 0 0 20px rgba(255, 0, 94, 0.6);
       transform: translateY(-2px);
     }
 
     .back-btn {
       margin-top: 30px;
-      background-color: rgba(255, 124, 229, 0.2);
+      background-color: rgba(255, 0, 94, 0.15);
       color: white;
       padding: 12px 24px;
-      border: 1px solid rgba(255, 124, 229, 0.3);
-      border-radius: 10px;
+      border: 1px solid rgba(255, 0, 94, 0.3);
+      border-radius: 12px;
       font-size: 1rem;
       cursor: pointer;
       transition: all 0.25s ease;
-      box-shadow: 0 0 10px rgba(255, 124, 229, 0.4);
+      box-shadow: 0 0 14px rgba(255, 0, 94, 0.4);
     }
 
     .back-btn:hover {
-      background-color: rgba(255, 124, 229, 0.4);
-      box-shadow: 0 0 15px rgba(255, 124, 229, 0.6);
+      background-color: rgba(255, 0, 94, 0.4);
+      box-shadow: 0 0 20px rgba(255, 0, 94, 0.6);
       transform: translateY(-2px);
     }
 
@@ -96,7 +93,7 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="title">Auraa Games</h1>
+    <h1 class="title">Ruby Games</h1>
     <div id="game-options">
       <button class="game-btn" onclick="openGame('/games/cookie-clicker.html')">Cookie Clicker</button>
       <button class="game-btn" onclick="openGame('/games/tomb-of-the-mask.html')">Tomb of the Mask</button>
@@ -104,23 +101,23 @@
       <button class="game-btn" onclick="openGame('/games/ovo.html')">OvO</button>
       <button class="game-btn" onclick="openGame('/games/1v1lol/index.html')">1v1.LoL</button>
       <button class="game-btn" onclick="openGame('/games/chromedino.html')">Offline Dino Game</button>
-      <button class="game-btn" onclick="openGame('/games/wordle.html')">Wordle for Auraa</button>
+      <button class="game-btn" onclick="openGame('/games/wordle.html')">Wordle for Ruby</button>
       <button class="game-btn" onclick="openGame('/games/geometrydash.html')">Geometry Dash</button>
-      <button class="game-btn" onclick="openGame('/games/slope.html')">Slope for Auraa</button>
+      <button class="game-btn" onclick="openGame('/games/slope.html')">Slope for Ruby</button>
     </div>
 
-    <button class="back-btn" onclick="goBackToAuraa()">Back to Auraa</button>
+    <button class="back-btn" onclick="goBackToRuby()">Back to Ruby</button>
   </div>
 
-  <div class="footer">Auraa | By Quantum Services</div>
+  <div class="footer">Ruby | By Quantum Services</div>
 
   <script>
     function openGame(gameFile) {
       window.open(gameFile, '_blank');
     }
 
-    function goBackToAuraa() {
-      window.top.location.href = 'index.html'; // Ensures it's not nested in iframe
+    function goBackToRuby() {
+      window.top.location.href = 'index.html';
     }
   </script>
 </body>
