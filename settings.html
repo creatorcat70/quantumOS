@@ -3,234 +3,413 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Auraa Settings [WIP]</title>
+  <title>Ruby Settings</title>
   <link rel="icon" type="image/png" href="icon.png" id="dynamicFavicon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      margin: 0;
-      padding: 40px;
-      background: linear-gradient(135deg, #3a002a, #0c001c);
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at 20% 80%, rgba(220, 38, 127, .3) 0%, transparent 50%), 
+                  radial-gradient(circle at 80% 20%, rgba(185, 28, 28, .4) 0%, transparent 50%), 
+                  linear-gradient(135deg, #0a0000 0%, #800000 100%);
       color: #fff;
-      font-family: 'Poppins', sans-serif;
       min-height: 100vh;
+      overflow-x: hidden;
+      animation: bg 8s ease-in-out infinite alternate;
       display: flex;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      padding: 40px 20px;
+    }
+
+    @keyframes bg {
+      0% { filter: brightness(1); }
+      50% { filter: brightness(1.1); }
+      100% { filter: brightness(1.05); }
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, .15), transparent),
+                  radial-gradient(2px 2px at 40px 70px, rgba(220, 38, 127, .3), transparent);
+      background-size: 200px 100px;
+      animation: particles 20s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes particles {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-1000px); opacity: 0; }
+    }
+
+    .settings-container {
+      position: relative;
+      z-index: 10;
+      max-width: 600px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(15, 0, 0, .95), rgba(30, 0, 0, .95));
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(220, 38, 127, .3);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 40px rgba(220, 38, 127, 0.2);
     }
 
     .title {
-      font-size: 4rem;
+      font-size: 48px;
       font-weight: 700;
-      background: linear-gradient(90deg, #ff7ce5, #c02c8f);
+      background: linear-gradient(135deg, #dc2626, #ef4444, #f87171, #fca5a5);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 1rem;
+      text-shadow: 0 0 30px rgba(220, 38, 127, .5);
+      margin-bottom: 10px;
+      animation: glow 4s ease-in-out infinite alternate;
+      text-align: center;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 30px rgba(220, 38, 127, .5);
+        filter: brightness(1);
+      }
+      to {
+        text-shadow: 0 0 50px rgba(220, 38, 127, .8);
+        filter: brightness(1.2);
+      }
     }
 
     .dot {
-      color: #ff85e1;
+      color: #ef4444;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      color: #fca5a5;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .setting-group {
+      margin-bottom: 30px;
     }
 
     label {
-      font-size: 1.2rem;
-      margin-top: 30px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #fca5a5;
       display: block;
-      text-align: left;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
+      margin-bottom: 10px;
       cursor: pointer;
     }
 
-    select, input[type=number], button {
-      margin-top: 15px;
-      padding: 12px 25px;
-      border-radius: 25px;
-      border: none;
-      font-size: 1rem;
-      background: #7b2cbf;
+    select, input[type=number] {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(220, 38, 127, .3);
+      font-size: 14px;
+      background: linear-gradient(135deg, rgba(220, 38, 127, .2), rgba(185, 28, 28, .2));
+      backdrop-filter: blur(10px);
       color: white;
-      cursor: pointer;
-      box-shadow: 0 0 8px #c02c8f;
-      transition: 0.3s ease;
+      transition: all 0.3s ease;
       outline: none;
-      width: 300px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
     }
 
-    select:hover, input[type=number]:hover, button:hover {
-      background: #9d4edd;
+    select:focus, input[type=number]:focus {
+      border-color: rgba(220, 38, 127, .6);
+      box-shadow: 0 0 25px rgba(220, 38, 127, .4);
+      background: linear-gradient(135deg, rgba(220, 38, 127, .3), rgba(185, 28, 28, .3));
+      transform: scale(1.02);
+    }
+
+    select:hover, input[type=number]:hover {
+      border-color: rgba(220, 38, 127, .5);
+      background: linear-gradient(135deg, rgba(220, 38, 127, .25), rgba(185, 28, 28, .25));
+    }
+
+    select option {
+      background: #1a0000;
+      color: white;
+      padding: 10px;
+    }
+
+    input[type=number]::placeholder {
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
     }
 
     input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-      vertical-align: middle;
+      width: 20px;
+      height: 20px;
+      appearance: none;
+      border: 2px solid rgba(220, 38, 127, .4);
+      border-radius: 4px;
+      background: transparent;
       cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    input[type="checkbox"]:checked {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      border-color: #dc2626;
+    }
+
+    input[type="checkbox"]:checked::before {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    input[type="checkbox"]:hover {
+      border-color: rgba(220, 38, 127, .6);
+      box-shadow: 0 0 10px rgba(220, 38, 127, .3);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 40px;
+    }
+
+    button {
+      flex: 1;
+      padding: 15px 25px;
+      border-radius: 12px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .save-btn {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      box-shadow: 0 4px 15px rgba(220, 38, 127, .3);
+    }
+
+    .save-btn:hover {
+      background: linear-gradient(135deg, #b91c1c, #991b1b);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(220, 38, 127, .4);
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, rgba(220, 38, 127, .3), rgba(185, 28, 28, .3));
+      border: 1px solid rgba(220, 38, 127, .4);
+      color: #ef4444;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(135deg, rgba(220, 38, 127, .5), rgba(185, 28, 28, .5));
+      color: white;
+      transform: translateY(-1px);
     }
 
     .footer {
-      margin-top: auto;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      text-shadow: 0 0 5px #c77dff;
-      padding-bottom: 20px;
-      user-select: none;
+      margin-top: 40px;
+      font-size: 14px;
+      color: rgba(252, 165, 165, .7);
+      text-align: center;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .settings-container {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+      
+      .title {
+        font-size: 36px;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <h1 class="title">Auraa<span class="dot"> Settings.</span></h1>
+  <div class="settings-container">
+    <h1 class="title">Ruby<span class="dot"> Settings.</span></h1>
+    <p class="subtitle">Customize your Ruby browser experience</p>
 
-  <label for="cloakSelect">Cloak tab as:</label>
-  <select id="cloakSelect">
-    <option value="default">Default - Auraa</option>
-    <option value="https://www.khanacademy.org/favicon.ico|Khan Academy">Khan Academy</option>
-    <option value="https://www.google.com/favicon.ico|Google Classroom">Google Classroom</option>
-    <option value="https://www.wikipedia.org/static/favicon/wikipedia.ico|Wikipedia">Wikipedia</option>
-    <option value="https://www.edmodo.com/favicon.ico|Edmodo">Edmodo</option>
-    <option value="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6/svgs/solid/book.svg|Scholarly">Scholarly</option>
-  </select>
+    <div class="setting-group">
+      <label for="cloakSelect">
+        <i class="bi bi-mask"></i> Cloak tab as:
+      </label>
+      <select id="cloakSelect">
+        <option value="default">Default - Ruby</option>
+        <option value="https://www.khanacademy.org/favicon.ico|Khan Academy">Khan Academy</option>
+        <option value="https://www.google.com/favicon.ico|Google Classroom">Google Classroom</option>
+        <option value="https://www.wikipedia.org/static/favicon/wikipedia.ico|Wikipedia">Wikipedia</option>
+        <option value="https://www.edmodo.com/favicon.ico|Edmodo">Edmodo</option>
+        <option value="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6/svgs/solid/book.svg|Scholarly">Scholarly</option>
+      </select>
+    </div>
 
-  <label for="searchEngineSelect">Default Search Engine:</label>
-  <select id="searchEngineSelect">
-    <option value="duckduckgo">DuckDuckGo</option>
-    <option value="google">Google</option>
-    <option value="bing">Bing</option>
-    <option value="startpage">Startpage</option>
-    <option value="brave">Brave</option>
-  </select>
+    <div class="setting-group">
+      <label for="searchEngineSelect">
+        <i class="bi bi-search"></i> Default Search Engine:
+      </label>
+      <select id="searchEngineSelect">
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="startpage">Startpage</option>
+        <option value="brave">Brave</option>
+      </select>
+    </div>
 
-  <label for="particleCountInput">Number of falling particles:</label>
-  <input type="number" id="particleCountInput" min="0" max="300" step="1" placeholder="Enter number (0-300)" />
+    <div class="setting-group">
+      <label class="checkbox-group" for="blankModeToggle">
+        <input type="checkbox" id="blankModeToggle" />
+        <span>
+          <i class="bi bi-window"></i> Open links in blank mode (new window)
+        </span>
+      </label>
+    </div>
 
-  <label for="particleToggle">
-    <input type="checkbox" id="particleToggle" /> Enable falling particles effect
-  </label>
+    <div class="setting-group">
+      <label class="checkbox-group" for="animationsToggle">
+        <input type="checkbox" id="animationsToggle" />
+        <span>
+          <i class="bi bi-magic"></i> Enable background animations
+        </span>
+      </label>
+    </div>
 
-  <button id="saveBtn" style="margin-top:40px;">Save Settings</button>
-  <button onclick="window.top.location.href='index.html'" style="margin-top:20px;">Back to Homepage</button>
+    <div class="button-group">
+      <button class="save-btn" id="saveBtn">
+        <i class="bi bi-check-circle"></i>
+        Save Settings
+      </button>
+      <button class="back-btn" onclick="window.top.location.href='index.html'">
+        <i class="bi bi-arrow-left"></i>
+        Back to Ruby
+      </button>
+    </div>
+  </div>
 
-  <p class="footer">Auraa Settings | Made by @thefakesydney</p>
+  <p class="footer">Ruby Settings | Quantum Services</p>
 
   <script>
     const cloakSelect = document.getElementById('cloakSelect');
-    const particleCountInput = document.getElementById('particleCountInput');
-    const particleToggle = document.getElementById('particleToggle');
-    const saveBtn = document.getElementById('saveBtn');
     const searchEngineSelect = document.getElementById('searchEngineSelect');
+    const blankModeToggle = document.getElementById('blankModeToggle');
+    const animationsToggle = document.getElementById('animationsToggle');
+    const saveBtn = document.getElementById('saveBtn');
     const dynamicFavicon = document.getElementById('dynamicFavicon');
 
+    // Load settings from localStorage or set defaults
     function loadSettings() {
-      cloakSelect.value = localStorage.getItem('auraaCloak') || 'default';
-      particleCountInput.value = localStorage.getItem('auraaParticleCount') || '100';
-      particleToggle.checked = localStorage.getItem('auraaParticlesEnabled') !== 'false';
-      searchEngineSelect.value = localStorage.getItem('searchEngine') || 'duckduckgo';
+      cloakSelect.value = localStorage.getItem('rubyCloak') || 'default';
+      searchEngineSelect.value = localStorage.getItem('rubySearchEngine') || 'duckduckgo';
+      blankModeToggle.checked = localStorage.getItem('rubyBlankMode') === 'true';
+      animationsToggle.checked = localStorage.getItem('rubyAnimations') !== 'false';
       updateCloakVisuals();
+      updateAnimations();
     }
 
+    // Save all settings to localStorage
     function saveSettings() {
-      localStorage.setItem('auraaCloak', cloakSelect.value);
-      localStorage.setItem('auraaParticleCount', particleCountInput.value);
-      localStorage.setItem('auraaParticlesEnabled', particleToggle.checked);
-      localStorage.setItem('searchEngine', searchEngineSelect.value);
-      alert('Settings saved!');
+      localStorage.setItem('rubyCloak', cloakSelect.value);
+      localStorage.setItem('rubySearchEngine', searchEngineSelect.value);
+      localStorage.setItem('rubyBlankMode', blankModeToggle.checked);
+      localStorage.setItem('rubyAnimations', animationsToggle.checked);
+      
+      // Visual feedback
+      const originalText = saveBtn.innerHTML;
+      saveBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Saved!';
+      saveBtn.style.background = 'linear-gradient(135deg, #059669, #047857)';
+      
+      setTimeout(() => {
+        saveBtn.innerHTML = originalText;
+        saveBtn.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
+      }, 2000);
+      
       updateCloakVisuals();
+      updateAnimations();
     }
 
+    // Update tab title and favicon based on cloak setting
     function updateCloakVisuals() {
       if (cloakSelect.value === 'default') {
-        document.title = "Auraa Settings";
+        document.title = "Ruby Settings";
         dynamicFavicon.href = "icon.png";
         return;
       }
+      
       const [iconUrl, siteTitle] = cloakSelect.value.split('|');
       document.title = siteTitle + " Settings";
       dynamicFavicon.href = iconUrl;
     }
 
+    // Update background animations
+    function updateAnimations() {
+      const body = document.body;
+      if (animationsToggle.checked) {
+        body.style.animation = 'bg 8s ease-in-out infinite alternate';
+        body.querySelector('::before')?.style.setProperty('animation', 'particles 20s linear infinite');
+      } else {
+        body.style.animation = 'none';
+        body.style.filter = 'brightness(1)';
+      }
+    }
+
+    // Event listeners
     cloakSelect.addEventListener('change', updateCloakVisuals);
     saveBtn.addEventListener('click', saveSettings);
+    animationsToggle.addEventListener('change', updateAnimations);
 
-    window.addEventListener('load', () => {
-      loadSettings();
-      updateParticlesEffect();
-    });
+    // Initialize settings on page load
+    window.addEventListener('load', loadSettings);
 
-    let animationFrameId = null;
-    function createParticles() {
-      if (document.getElementById('snowCanvas')) return;
-      const canvas = document.createElement('canvas');
-      canvas.id = 'snowCanvas';
-      Object.assign(canvas.style, {
-        position: 'fixed', top: '0', left: '0', width: '100vw', height: '100vh',
-        pointerEvents: 'none', zIndex: '0'
+    // Auto-save on changes (optional - provides better UX)
+    [cloakSelect, searchEngineSelect, blankModeToggle, animationsToggle].forEach(element => {
+      element.addEventListener('change', () => {
+        // Small delay to prevent excessive saves
+        clearTimeout(window.autoSaveTimeout);
+        window.autoSaveTimeout = setTimeout(saveSettings, 1000);
       });
-      document.body.prepend(canvas);
-
-      const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      const flakesCount = parseInt(localStorage.getItem('auraaParticleCount'), 10) || 100;
-      const flakes = Array.from({ length: flakesCount }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.5 + 0.5,
-        speedY: Math.random() * 0.5 + 0.2,
-        speedX: (Math.random() - 0.5) * 0.2
-      }));
-
-      function draw() {
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = 'rgba(255,255,255,0.8)';
-        ctx.beginPath();
-        flakes.forEach(flake => {
-          ctx.moveTo(flake.x, flake.y);
-          ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-        });
-        ctx.fill();
-
-        flakes.forEach(flake => {
-          flake.y += flake.speedY;
-          flake.x += flake.speedX;
-          if (flake.y > height) flake.y = 0, flake.x = Math.random() * width;
-          if (flake.x > width) flake.x = 0;
-          if (flake.x < 0) flake.x = width;
-        });
-
-        animationFrameId = requestAnimationFrame(draw);
-      }
-
-      draw();
-    }
-
-    function removeParticles() {
-      const canvas = document.getElementById('snowCanvas');
-      if (canvas) canvas.remove();
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = null;
-    }
-
-    function updateParticlesEffect() {
-      particleToggle.checked ? createParticles() : removeParticles();
-    }
-
-    particleToggle.addEventListener('change', () => {
-      localStorage.setItem('auraaParticlesEnabled', particleToggle.checked);
-      updateParticlesEffect();
     });
   </script>
 </body>
