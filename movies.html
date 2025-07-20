@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <style>
+    /* (Your existing CSS here; omitted for brevity, but include all from your original) */
     * {
       margin: 0;
       padding: 0;
@@ -202,18 +203,15 @@
   <script>
     async function initMovies() {
       const loadingMsg = document.getElementById("loadingMsg");
-      
-      // Check if service worker is already registered and active
+
       if (!navigator.serviceWorker.controller) {
         try {
           loadingMsg.innerText = "Registering service worker...";
-          
-          // Register the service worker
-          const registration = await navigator.serviceWorker.register('/active/uv/uv.sw.js', { 
-            scope: '/active/go/' 
+
+          const registration = await navigator.serviceWorker.register('/active/uv/uv.sw.js', {
+            scope: '/active/go/'
           });
-          
-          // Wait for the service worker to become active
+
           if (registration.installing) {
             await new Promise((resolve) => {
               registration.installing.addEventListener('statechange', () => {
@@ -223,8 +221,7 @@
               });
             });
           }
-          
-          // Reload to use the new service worker
+
           location.reload();
           return;
         } catch (err) {
@@ -241,19 +238,17 @@
         }
       }
 
-      // Wait for UV config to be available
       const waitForUV = () => {
-        if (typeof __uv$config !== "undefined" && typeof __uv$config.encodeUrl === "function") {
+        if (typeof __uv$config !== "undefined" && typeof Ultraviolet !== "undefined") {
           try {
             loadingMsg.innerText = "Connecting to movies...";
-            const encoded = __uv$config.encodeUrl("https://movies.waves.lat");
+            const uv = new Ultraviolet(__uv$config);
             const movieFrame = document.getElementById("movieFrame");
-            
-            // Handle iframe load events
+
             movieFrame.onload = () => {
               loadingMsg.style.display = "none";
             };
-            
+
             movieFrame.onerror = () => {
               loadingMsg.innerHTML = `
                 <div class="error-message">
@@ -263,8 +258,8 @@
                 </div>
               `;
             };
-            
-            movieFrame.src = __uv$config.prefix + encoded;
+
+            movieFrame.src = __uv$config.prefix + uv.encodeUrl("https://movies.waves.lat");
           } catch (err) {
             console.error("Failed to encode URL:", err);
             loadingMsg.innerHTML = `
@@ -277,21 +272,17 @@
             `;
           }
         } else {
-          // Keep trying every 100ms for up to 10 seconds
           setTimeout(waitForUV, 100);
         }
       };
-      
+
       waitForUV();
     }
 
-    // Initialize when page loads
     window.addEventListener("load", initMovies);
 
-    // Handle service worker updates
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        // Reload when a new service worker takes control
         location.reload();
       });
     }
