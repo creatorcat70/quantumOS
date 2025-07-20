@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angry Bird | Evadion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background-color: #231f20;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        #button {
+            display: none;
+        }
+        
+        .imgb_vis {
+            animation: imgb-animation 7s linear;
+        }
+        
+        @keyframes imgb-animation {
+            10% { transform: translateX(0); }
+            20% { transform: translateX(100px); }
+            90% { transform: translateX(100px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .webgl-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #gameContainer {
+            width: 100% !important;
+            height: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            border: 0 !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            background: rgb(35, 31, 32) !important;
+        }
+        
+        #gameContainer canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .loading-text {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <h2>Loading Game...</h2>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+        <div class="loading-text" id="loadingText">0%</div>
+    </div>
+
+    <div class="webgl-content">
+        <div id="gameContainer"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/lee2sman/everyday@d45d601d2c4d60adf809a0b677c00b7d12aba7e9/96/TemplateData/UnityProgress.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gertdoro/UnityExplorer@cffa09e09790018403c996d37adb6c4450e8f6c6/Runtime/birds/birds.js"></script>
+    
+    <script>
+
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingProgress = document.getElementById('loadingProgress');
+        const loadingText = document.getElementById('loadingText');
+        
+
+        function handleProgress(gameInstance, progress) {
+            const percent = Math.round(progress * 100);
+            loadingProgress.style.width = `${percent}%`;
+            loadingText.textContent = `${percent}%`;
+            
+            if (progress === 1) {
+                setTimeout(() => {
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingOverlay.style.display = 'none';
+                    }, 500);
+                }, 500);
+            }
+        }
+        
+
+        var gameInstance = UnityLoader.instantiate(
+            "gameContainer", 
+            "https://cdn.jsdelivr.net/gh/gertdoro/UnityExplorer@cffa09e09790018403c996d37adb6c4450e8f6c6/Runtime/birds/birds.json", 
+            {
+                onProgress: handleProgress,
+                Module: {
+                    onRuntimeInitialized: function() {
+                        handleProgress(gameInstance, 1);
+                    }
+                }
+            }
+        );
+        
+
+        function resizeGameContainer() {
+            const gameContainer = document.getElementById('gameContainer');
+            if (gameContainer) {
+                gameContainer.style.width = window.innerWidth + 'px';
+                gameContainer.style.height = window.innerHeight + 'px';
+                
+
+                const canvas = document.querySelector('#gameContainer canvas');
+                if (canvas) {
+                    canvas.style.width = '100%';
+                    canvas.style.height = '100%';
+                }
+            }
+        }
+        
+ 
+        window.addEventListener('resize', resizeGameContainer);
+        
+
+        resizeGameContainer();
+        
+ 
+        document.addEventListener('click', function() {
+            const gameContainer = document.getElementById('gameContainer');
+            if (gameContainer.requestFullscreen) {
+                gameContainer.requestFullscreen();
+            } else if (gameContainer.webkitRequestFullscreen) {
+                gameContainer.webkitRequestFullscreen();
+            } else if (gameContainer.msRequestFullscreen) {
+                gameContainer.msRequestFullscreen();
+            }
+        }, { once: true });
+    </script>
+</body>
+</html>
