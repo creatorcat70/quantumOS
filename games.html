@@ -20,19 +20,16 @@
       justify-content: flex-start;
       animation: glowPulse 6s infinite ease-in-out;
     }
-
     @keyframes glowPulse {
       0%, 100% { background: radial-gradient(circle at top left, #600000, #220000); }
       50% { background: radial-gradient(circle at top right, #7c0000, #2a0000); }
     }
-
     .container {
       width: 90%;
       max-width: 800px;
       text-align: center;
       margin-top: 40px;
     }
-
     .title {
       font-size: 3rem;
       font-weight: 700;
@@ -43,7 +40,6 @@
       user-select: none;
       margin-bottom: 2rem;
     }
-
     .game-btn {
       background: rgba(255, 0, 94, 0.12);
       color: #fff;
@@ -56,13 +52,11 @@
       transition: all 0.25s ease;
       box-shadow: 0 0 14px rgba(255, 0, 94, 0.3);
     }
-
     .game-btn:hover {
       background: rgba(255, 0, 94, 0.3);
       box-shadow: 0 0 20px rgba(255, 0, 94, 0.6);
       transform: translateY(-2px);
     }
-
     .back-btn {
       margin-top: 30px;
       background-color: rgba(255, 0, 94, 0.15);
@@ -75,13 +69,11 @@
       transition: all 0.25s ease;
       box-shadow: 0 0 14px rgba(255, 0, 94, 0.4);
     }
-
     .back-btn:hover {
       background-color: rgba(255, 0, 94, 0.4);
       box-shadow: 0 0 20px rgba(255, 0, 94, 0.6);
       transform: translateY(-2px);
     }
-
     .footer {
       margin-top: 60px;
       font-size: 0.9rem;
@@ -89,38 +81,181 @@
       text-align: center;
       opacity: 0.8;
     }
+    
+    /* Game iframe styles */
+    .game-container {
+      display: none;
+      width: 100%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(255, 0, 94, 0.3);
+    }
+    .game-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 12px;
+      background: #000;
+    }
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .game-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ff4d4d;
+    }
+    .close-game-btn {
+      background: rgba(255, 0, 0, 0.2);
+      color: #fff;
+      border: 1px solid rgba(255, 0, 0, 0.5);
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .close-game-btn:hover {
+      background: rgba(255, 0, 0, 0.4);
+    }
+    .fullscreen-btn {
+      background: rgba(0, 255, 0, 0.2);
+      color: #fff;
+      border: 1px solid rgba(0, 255, 0, 0.5);
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-right: 10px;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(0, 255, 0, 0.4);
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1 class="title">Ruby Games</h1>
     <div id="game-options">
-      <button class="game-btn" onclick="openGame('/games/cookie-clicker.html')">Cookie Clicker</button>
-      <button class="game-btn" onclick="openGame('/games/tomb-of-the-mask.html')">Tomb of the Mask</button>
-      <button class="game-btn" onclick="openGame('/games/timeshooter2.html')">Time Shooter 2</button>
-      <button class="game-btn" onclick="openGame('/games/ovo.html')">OvO</button>
-      <button class="game-btn" onclick="openGame('/games/1v1lol/index.html')">1v1.LoL</button>
-      <button class="game-btn" onclick="openGame('/games/chromedino.html')">Offline Dino Game</button>
-      <button class="game-btn" onclick="openGame('/games/wordle.html')">Wordle for Ruby</button>
-      <button class="game-btn" onclick="openGame('/games/geometrydash.html')">Geometry Dash</button>
-      <button class="game-btn" onclick="openGame('/games/slope.html')">Slope for Ruby</button>
-      <button class="game-btn" onclick="openGame('/gms/2048.html')">2048</button>
-
+      <button class="game-btn" onclick="openGame('/games/cookie-clicker.html', 'Cookie Clicker')">Cookie Clicker</button>
+      <button class="game-btn" onclick="openGame('/games/tomb-of-the-mask.html', 'Tomb of the Mask')">Tomb of the Mask</button>
+      <button class="game-btn" onclick="openGame('/games/timeshooter2.html', 'Time Shooter 2')">Time Shooter 2</button>
+      <button class="game-btn" onclick="openGame('/games/ovo.html', 'OvO')">OvO</button>
+      <button class="game-btn" onclick="openGame('/games/1v1lol/index.html', '1v1.LoL')">1v1.LoL</button>
+      <button class="game-btn" onclick="openGame('/games/chromedino.html', 'Offline Dino Game')">Offline Dino Game</button>
+      <button class="game-btn" onclick="openGame('/games/wordle.html', 'Wordle for Ruby')">Wordle for Ruby</button>
+      <button class="game-btn" onclick="openGame('/games/geometrydash.html', 'Geometry Dash')">Geometry Dash</button>
+      <button class="game-btn" onclick="openGame('/games/slope.html', 'Slope for Ruby')">Slope for Ruby</button>
+      <button class="game-btn" onclick="openGame('/gms/2048.html', '2048')">2048</button>
+      <button class="game-btn" onclick="openGame('/gms/99balls.html', '99balls')">99balls</button>
+      <button class="game-btn" onclick="openGame('/gms/TABS.html', 'TABS')">TABS</button>
+      <button class="game-btn" onclick="openGame('/gms/abandoned.html', 'abandoned')">abandoned</button>
+      <button class="game-btn" onclick="openGame('/gms/admistthesky.html', 'admistthesky')">admistthesky</button>
+      <button class="game-btn" onclick="openGame('/gms/amongus.html', 'amongus')">amongus</button>
+      <button class="game-btn" onclick="openGame('/gms/ancientsins.html', 'ancientsins')">ancientsins</button>
+      <button class="game-btn" onclick="openGame('/gms/angrybird.html', 'angrybird')">angrybird</button>
+      <button class="game-btn" onclick="openGame('/gms/aquaparkio.html', 'aquaparkio')">aquaparkio</button>
+      <button class="game-btn" onclick="openGame('/gms/babeltower.html', 'babeltower')">babeltower</button>
+      <button class="game-btn" onclick="openGame('/gms/baconmaydie.html', 'baconmaydie')">baconmaydie</button>
+      <button class="game-btn" onclick="openGame('/gms/basketballlegends.html', 'basketballlegends')">basketballlegends</button>
+      <button class="game-btn" onclick="openGame('/gms/batterup.html', 'batterup')">batterup</button>
+      <button class="game-btn" onclick="openGame('/gms/battlesim.html', 'battlesim')">battlesim</button>
+      <button class="game-btn" onclick="openGame('/gms/bleachvsnaruto.html', 'bleachvsnaruto')">bleachvsnaruto</button>
+      <button class="game-btn" onclick="openGame('/gms/blobstory2', 'blobstory2')">blobstory2</button>
+      <button class="game-btn" onclick="openGame('/gms/blockblast.html', 'blockblast')">blockblast</button>
+      <button class="game-btn" onclick="openGame('/gms/blockysnakes.html', 'blockysnakes')">blockysnakes</button>
+      <button class="game-btn" onclick="openGame('/gms/candycrush.html', 'candycrush')">candycrush</button>
+      <button class="game-btn" onclick="openGame('/gms/chessclassic.html', 'chessclassic')">chess</button>
+      <button class="game-btn" onclick="openGame('/gms/coreball.html', 'coreball')">coreball</button>
+      <button class="game-btn" onclick="openGame('/gms/countersnipe.html', 'countersnipe')">countersnipe</button>
+      <button class="game-btn" onclick="openGame('/gms/driftboss.html', 'driftboss')">drift boss</button>
+      <button class="game-btn" onclick="openGame('/gms/tag.html', 'tag')">tag</button>
+      <button class="game-btn" onclick="openGame('/gms/tallmanrun.html', 'tallmanrun')">tall man run</button>
+      <button class="game-btn" onclick="openGame('/gms/templerun2.html', 'templerun2')">templerun2</button>
+      <button class="game-btn" onclick="openGame('/gms/timeshooter2.html', 'timeshooter2')">time shooter 2</button>
+      <button class="game-btn" onclick="openGame('/gms/timeshooter3.html', 'timeshooter3')">timeshooter3</button>
+      <button class="game-btn" onclick="openGame('/gms/tunelrush.html', 'tunelrush')">tunelrush</button>
     </div>
-
     <button class="back-btn" onclick="goBackToRuby()">Back to Ruby</button>
   </div>
-
+  
+  <!-- Game Container -->
+  <div id="game-container" class="game-container">
+    <div class="game-header">
+      <div class="game-title" id="game-title">Game Title</div>
+      <div>
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">Fullscreen</button>
+        <button class="close-game-btn" onclick="closeGame()">Close Game</button>
+      </div>
+    </div>
+    <iframe id="game-iframe" class="game-iframe" src="" allowfullscreen></iframe>
+  </div>
+  
   <div class="footer">Ruby | By Quantum Services</div>
-
+  
   <script>
-    function openGame(gameFile) {
-      window.open(gameFile, '_blank');
+    function openGame(gameFile, gameTitle) {
+      // Hide the main game options
+      document.getElementById('game-options').style.display = 'none';
+      
+      // Show the game container
+      const gameContainer = document.getElementById('game-container');
+      const gameIframe = document.getElementById('game-iframe');
+      const gameTitleEl = document.getElementById('game-title');
+      
+      gameContainer.style.display = 'block';
+      gameIframe.src = gameFile;
+      gameTitleEl.textContent = gameTitle;
+      
+      // Scroll to game
+      gameContainer.scrollIntoView({ behavior: 'smooth' });
     }
-
+    
+    function closeGame() {
+      // Hide the game container
+      const gameContainer = document.getElementById('game-container');
+      const gameIframe = document.getElementById('game-iframe');
+      
+      gameContainer.style.display = 'none';
+      gameIframe.src = '';
+      
+      // Show the main game options
+      document.getElementById('game-options').style.display = 'block';
+      
+      // Scroll back to top
+      document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function toggleFullscreen() {
+      const gameIframe = document.getElementById('game-iframe');
+      
+      if (!document.fullscreenElement) {
+        gameIframe.requestFullscreen().catch(err => {
+          console.log('Error attempting to enable fullscreen:', err);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+    
     function goBackToRuby() {
       window.top.location.href = 'index.html';
     }
+    
+    // Handle escape key to close game
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const gameContainer = document.getElementById('game-container');
+        if (gameContainer.style.display === 'block') {
+          closeGame();
+        }
+      }
+    });
   </script>
 </body>
 </html>
