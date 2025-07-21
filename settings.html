@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ruby Settings</title>
-  <link rel="icon" type="image/png" href="icon.png" id="dynamicFavicon" />
+  <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23dc2626'/><text x='16' y='20' text-anchor='middle' fill='white' font-size='20'>R</text></svg>" id="dynamicFavicon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -29,6 +29,7 @@
       flex-direction: column;
       align-items: center;
       padding: 40px 20px;
+      position: relative;
     }
 
     @keyframes bg {
@@ -53,8 +54,8 @@
     }
 
     @keyframes particles {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-1000px); opacity: 0; }
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-1000px) rotate(360deg); opacity: 0; }
     }
 
     .settings-container {
@@ -230,6 +231,10 @@
       box-shadow: 0 6px 25px rgba(220, 38, 127, .4);
     }
 
+    .save-btn:active {
+      transform: translateY(0px);
+    }
+
     .back-btn {
       background: linear-gradient(135deg, rgba(220, 38, 127, .3), rgba(185, 28, 28, .3));
       border: 1px solid rgba(220, 38, 127, .4);
@@ -242,6 +247,18 @@
       transform: translateY(-1px);
     }
 
+    .test-btn {
+      background: linear-gradient(135deg, rgba(255, 215, 0, .3), rgba(255, 165, 0, .3));
+      border: 1px solid rgba(255, 215, 0, .4);
+      color: #ffd700;
+    }
+
+    .test-btn:hover {
+      background: linear-gradient(135deg, rgba(255, 215, 0, .5), rgba(255, 165, 0, .5));
+      color: white;
+      transform: translateY(-1px);
+    }
+
     .footer {
       margin-top: 40px;
       font-size: 14px;
@@ -249,6 +266,56 @@
       text-align: center;
       font-weight: 500;
       opacity: 0.8;
+    }
+
+    .current-settings {
+      background: rgba(0, 0, 0, .3);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 3px solid #dc2626;
+    }
+
+    .current-settings h3 {
+      color: #fca5a5;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .current-settings p {
+      color: #fff;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .snow-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .success-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(5, 150, 105, .3);
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .success-message.show {
+      opacity: 1;
+      transform: translateX(0);
     }
 
     @media (max-width: 768px) {
@@ -272,6 +339,15 @@
     <h1 class="title">Ruby<span class="dot"> Settings.</span></h1>
     <p class="subtitle">Customize your Ruby browser experience</p>
 
+    <div class="current-settings">
+      <h3><i class="bi bi-info-circle"></i> Current Settings</h3>
+      <p id="currentCloak">Cloak: Default - Ruby</p>
+      <p id="currentSearch">Search Engine: DuckDuckGo</p>
+      <p id="currentBlank">Blank Mode: Disabled</p>
+      <p id="currentAnimations">Animations: Enabled</p>
+      <p id="currentParticles">Particles: 100</p>
+    </div>
+
     <div class="setting-group">
       <label for="cloakSelect">
         <i class="bi bi-mask"></i> Cloak tab as:
@@ -279,10 +355,10 @@
       <select id="cloakSelect">
         <option value="default">Default - Ruby</option>
         <option value="https://www.khanacademy.org/favicon.ico|Khan Academy">Khan Academy</option>
-        <option value="https://www.google.com/favicon.ico|Google Classroom">Google Classroom</option>
+        <option value="https://classroom.google.com/favicon.ico|Google Classroom">Google Classroom</option>
         <option value="https://www.wikipedia.org/static/favicon/wikipedia.ico|Wikipedia">Wikipedia</option>
         <option value="https://www.edmodo.com/favicon.ico|Edmodo">Edmodo</option>
-        <option value="https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome@6/svgs/solid/book.svg|Scholarly">Scholarly</option>
+        <option value="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%234285f4'/><path d='M16 8l8 6-8 6-8-6z' fill='white'/></svg>|Scholarly">Scholarly</option>
       </select>
     </div>
 
@@ -295,8 +371,16 @@
         <option value="google">Google</option>
         <option value="bing">Bing</option>
         <option value="startpage">Startpage</option>
-        <option value="brave">Brave</option>
+        <option value="brave">Brave Search</option>
+        <option value="yandex">Yandex</option>
       </select>
+    </div>
+
+    <div class="setting-group">
+      <label for="particleCountInput">
+        <i class="bi bi-snow"></i> Number of particles:
+      </label>
+      <input type="number" id="particleCountInput" min="0" max="300" step="10" placeholder="Enter number (0-300)" />
     </div>
 
     <div class="setting-group">
@@ -317,12 +401,25 @@
       </label>
     </div>
 
+    <div class="setting-group">
+      <label class="checkbox-group" for="particlesToggle">
+        <input type="checkbox" id="particlesToggle" />
+        <span>
+          <i class="bi bi-snow"></i> Enable falling particles effect
+        </span>
+      </label>
+    </div>
+
     <div class="button-group">
       <button class="save-btn" id="saveBtn">
         <i class="bi bi-check-circle"></i>
         Save Settings
       </button>
-      <button class="back-btn" onclick="window.top.location.href='index.html'">
+      <button class="test-btn" id="testBtn">
+        <i class="bi bi-eye"></i>
+        Test Settings
+      </button>
+      <button class="back-btn" id="backBtn">
         <i class="bi bi-arrow-left"></i>
         Back to Ruby
       </button>
@@ -331,85 +428,325 @@
 
   <p class="footer">Ruby Settings | Quantum Services</p>
 
-  <script>
-    const cloakSelect = document.getElementById('cloakSelect');
-    const searchEngineSelect = document.getElementById('searchEngineSelect');
-    const blankModeToggle = document.getElementById('blankModeToggle');
-    const animationsToggle = document.getElementById('animationsToggle');
-    const saveBtn = document.getElementById('saveBtn');
-    const dynamicFavicon = document.getElementById('dynamicFavicon');
+  <div class="success-message" id="successMessage">
+    <i class="bi bi-check-circle-fill"></i> Settings saved successfully!
+  </div>
 
-    // Load settings from localStorage or set defaults
+  <script>
+    // Get all DOM elements
+    const elements = {
+      cloakSelect: document.getElementById('cloakSelect'),
+      searchEngineSelect: document.getElementById('searchEngineSelect'),
+      particleCountInput: document.getElementById('particleCountInput'),
+      blankModeToggle: document.getElementById('blankModeToggle'),
+      animationsToggle: document.getElementById('animationsToggle'),
+      particlesToggle: document.getElementById('particlesToggle'),
+      saveBtn: document.getElementById('saveBtn'),
+      testBtn: document.getElementById('testBtn'),
+      backBtn: document.getElementById('backBtn'),
+      dynamicFavicon: document.getElementById('dynamicFavicon'),
+      successMessage: document.getElementById('successMessage'),
+      currentCloak: document.getElementById('currentCloak'),
+      currentSearch: document.getElementById('currentSearch'),
+      currentBlank: document.getElementById('currentBlank'),
+      currentAnimations: document.getElementById('currentAnimations'),
+      currentParticles: document.getElementById('currentParticles')
+    };
+
+    // Settings object to store current state
+    let settings = {
+      cloak: 'default',
+      searchEngine: 'duckduckgo',
+      particleCount: 100,
+      blankMode: false,
+      animations: true,
+      particles: true
+    };
+
+    // Load settings from memory storage
     function loadSettings() {
-      cloakSelect.value = localStorage.getItem('rubyCloak') || 'default';
-      searchEngineSelect.value = localStorage.getItem('rubySearchEngine') || 'duckduckgo';
-      blankModeToggle.checked = localStorage.getItem('rubyBlankMode') === 'true';
-      animationsToggle.checked = localStorage.getItem('rubyAnimations') !== 'false';
+      // In a real environment, these would come from localStorage
+      // For this demo, we'll use default values
+      settings = {
+        cloak: window.rubySettings?.cloak || 'default',
+        searchEngine: window.rubySettings?.searchEngine || 'duckduckgo',
+        particleCount: window.rubySettings?.particleCount || 100,
+        blankMode: window.rubySettings?.blankMode || false,
+        animations: window.rubySettings?.animations !== false,
+        particles: window.rubySettings?.particles !== false
+      };
+
+      // Update form elements
+      elements.cloakSelect.value = settings.cloak;
+      elements.searchEngineSelect.value = settings.searchEngine;
+      elements.particleCountInput.value = settings.particleCount;
+      elements.blankModeToggle.checked = settings.blankMode;
+      elements.animationsToggle.checked = settings.animations;
+      elements.particlesToggle.checked = settings.particles;
+
+      updateCurrentSettingsDisplay();
       updateCloakVisuals();
       updateAnimations();
+      updateParticles();
     }
 
-    // Save all settings to localStorage
+    // Save all settings to memory storage
     function saveSettings() {
-      localStorage.setItem('rubyCloak', cloakSelect.value);
-      localStorage.setItem('rubySearchEngine', searchEngineSelect.value);
-      localStorage.setItem('rubyBlankMode', blankModeToggle.checked);
-      localStorage.setItem('rubyAnimations', animationsToggle.checked);
-      
-      // Visual feedback
-      const originalText = saveBtn.innerHTML;
-      saveBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Saved!';
-      saveBtn.style.background = 'linear-gradient(135deg, #059669, #047857)';
-      
-      setTimeout(() => {
-        saveBtn.innerHTML = originalText;
-        saveBtn.style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
-      }, 2000);
-      
+      settings = {
+        cloak: elements.cloakSelect.value,
+        searchEngine: elements.searchEngineSelect.value,
+        particleCount: parseInt(elements.particleCountInput.value) || 0,
+        blankMode: elements.blankModeToggle.checked,
+        animations: elements.animationsToggle.checked,
+        particles: elements.particlesToggle.checked
+      };
+
+      // In a real environment, save to localStorage
+      window.rubySettings = settings;
+
+      updateCurrentSettingsDisplay();
       updateCloakVisuals();
       updateAnimations();
+      updateParticles();
+      showSuccessMessage();
+    }
+
+    // Update current settings display
+    function updateCurrentSettingsDisplay() {
+      const cloakText = settings.cloak === 'default' ? 'Default - Ruby' : 
+        settings.cloak.split('|')[1] || settings.cloak;
+      
+      elements.currentCloak.textContent = `Cloak: ${cloakText}`;
+      elements.currentSearch.textContent = `Search Engine: ${settings.searchEngine.charAt(0).toUpperCase() + settings.searchEngine.slice(1)}`;
+      elements.currentBlank.textContent = `Blank Mode: ${settings.blankMode ? 'Enabled' : 'Disabled'}`;
+      elements.currentAnimations.textContent = `Animations: ${settings.animations ? 'Enabled' : 'Disabled'}`;
+      elements.currentParticles.textContent = `Particles: ${settings.particles ? settings.particleCount : 'Disabled'}`;
     }
 
     // Update tab title and favicon based on cloak setting
     function updateCloakVisuals() {
-      if (cloakSelect.value === 'default') {
+      if (settings.cloak === 'default') {
         document.title = "Ruby Settings";
-        dynamicFavicon.href = "icon.png";
+        elements.dynamicFavicon.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23dc2626'/><text x='16' y='20' text-anchor='middle' fill='white' font-size='20'>R</text></svg>";
         return;
       }
       
-      const [iconUrl, siteTitle] = cloakSelect.value.split('|');
-      document.title = siteTitle + " Settings";
-      dynamicFavicon.href = iconUrl;
+      try {
+        const [iconUrl, siteTitle] = settings.cloak.split('|');
+        document.title = `${siteTitle} Settings`;
+        elements.dynamicFavicon.href = iconUrl;
+      } catch (error) {
+        console.warn('Error updating cloak visuals:', error);
+      }
     }
 
     // Update background animations
     function updateAnimations() {
       const body = document.body;
-      if (animationsToggle.checked) {
+      if (settings.animations) {
         body.style.animation = 'bg 8s ease-in-out infinite alternate';
-        body.querySelector('::before')?.style.setProperty('animation', 'particles 20s linear infinite');
       } else {
         body.style.animation = 'none';
         body.style.filter = 'brightness(1)';
       }
     }
 
+    // Particle system
+    let particleSystem = null;
+    let animationFrameId = null;
+
+    function updateParticles() {
+      removeParticles();
+      if (settings.particles && settings.particleCount > 0) {
+        createParticles();
+      }
+    }
+
+    function createParticles() {
+      const canvas = document.createElement('canvas');
+      canvas.className = 'snow-canvas';
+      document.body.appendChild(canvas);
+
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const handleResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.addEventListener('resize', handleResize);
+
+      const particles = [];
+      const particleCount = Math.min(settings.particleCount, 300);
+      
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2 + 1,
+          speedY: Math.random() * 1 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.5,
+          opacity: Math.random() * 0.6 + 0.4
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        particles.forEach(particle => {
+          ctx.globalAlpha = particle.opacity;
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          particle.y += particle.speedY;
+          particle.x += particle.speedX;
+
+          if (particle.y > height) {
+            particle.y = -particle.radius;
+            particle.x = Math.random() * width;
+          }
+          if (particle.x > width) particle.x = 0;
+          if (particle.x < 0) particle.x = width;
+        });
+
+        if (settings.particles) {
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      }
+
+      particleSystem = { canvas, handleResize, animate };
+      animate();
+    }
+
+    function removeParticles() {
+      if (particleSystem) {
+        window.removeEventListener('resize', particleSystem.handleResize);
+        if (particleSystem.canvas && particleSystem.canvas.parentNode) {
+          particleSystem.canvas.parentNode.removeChild(particleSystem.canvas);
+        }
+        particleSystem = null;
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+    }
+
+    function showSuccessMessage() {
+      elements.successMessage.classList.add('show');
+      setTimeout(() => {
+        elements.successMessage.classList.remove('show');
+      }, 3000);
+    }
+
+    function testSettings() {
+      // Create a temporary preview
+      const tempSettings = {
+        cloak: elements.cloakSelect.value,
+        searchEngine: elements.searchEngineSelect.value,
+        particleCount: parseInt(elements.particleCountInput.value) || 0,
+        blankMode: elements.blankModeToggle.checked,
+        animations: elements.animationsToggle.checked,
+        particles: elements.particlesToggle.checked
+      };
+
+      // Temporarily apply settings for preview
+      const originalSettings = { ...settings };
+      settings = tempSettings;
+      
+      updateCloakVisuals();
+      updateAnimations();
+      updateParticles();
+      
+      // Show a preview message
+      const tempMessage = document.createElement('div');
+      tempMessage.className = 'success-message show';
+      tempMessage.innerHTML = '<i class="bi bi-eye-fill"></i> Previewing settings... (5 seconds)';
+      tempMessage.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+      document.body.appendChild(tempMessage);
+
+      // Revert after 5 seconds
+      setTimeout(() => {
+        settings = originalSettings;
+        updateCloakVisuals();
+        updateAnimations();
+        updateParticles();
+        tempMessage.remove();
+      }, 5000);
+    }
+
     // Event listeners
-    cloakSelect.addEventListener('change', updateCloakVisuals);
-    saveBtn.addEventListener('click', saveSettings);
-    animationsToggle.addEventListener('change', updateAnimations);
+    elements.saveBtn.addEventListener('click', saveSettings);
+    elements.testBtn.addEventListener('click', testSettings);
+    elements.backBtn.addEventListener('click', () => {
+      alert('In a real implementation, this would navigate back to the main Ruby page');
+    });
+
+    // Real-time updates for immediate visual feedback
+    elements.cloakSelect.addEventListener('change', () => {
+      const tempCloak = elements.cloakSelect.value;
+      const originalCloak = settings.cloak;
+      settings.cloak = tempCloak;
+      updateCloakVisuals();
+      updateCurrentSettingsDisplay();
+      setTimeout(() => {
+        if (settings.cloak === tempCloak) return; // If settings were saved, don't revert
+        settings.cloak = originalCloak;
+        updateCloakVisuals();
+        updateCurrentSettingsDisplay();
+      }, 3000);
+    });
+
+    elements.animationsToggle.addEventListener('change', () => {
+      settings.animations = elements.animationsToggle.checked;
+      updateAnimations();
+      updateCurrentSettingsDisplay();
+    });
+
+    elements.particlesToggle.addEventListener('change', () => {
+      settings.particles = elements.particlesToggle.checked;
+      updateParticles();
+      updateCurrentSettingsDisplay();
+    });
+
+    elements.particleCountInput.addEventListener('input', () => {
+      settings.particleCount = parseInt(elements.particleCountInput.value) || 0;
+      if (settings.particles) {
+        updateParticles();
+      }
+      updateCurrentSettingsDisplay();
+    });
 
     // Initialize settings on page load
     window.addEventListener('load', loadSettings);
 
-    // Auto-save on changes (optional - provides better UX)
-    [cloakSelect, searchEngineSelect, blankModeToggle, animationsToggle].forEach(element => {
+    // Auto-save functionality (optional)
+    let autoSaveTimeout;
+    const autoSaveElements = [
+      elements.cloakSelect,
+      elements.searchEngineSelect,
+      elements.blankModeToggle,
+      elements.animationsToggle,
+      elements.particlesToggle,
+      elements.particleCountInput
+    ];
+
+    autoSaveElements.forEach(element => {
       element.addEventListener('change', () => {
-        // Small delay to prevent excessive saves
-        clearTimeout(window.autoSaveTimeout);
-        window.autoSaveTimeout = setTimeout(saveSettings, 1000);
+        clearTimeout(autoSaveTimeout);
+        autoSaveTimeout = setTimeout(() => {
+          // Optionally auto-save after 2 seconds of inactivity
+          // saveSettings();
+        }, 2000);
       });
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      removeParticles();
     });
   </script>
 </body>
