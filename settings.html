@@ -120,7 +120,7 @@
       cursor: pointer;
     }
 
-    select, input[type=number] {
+    select, input[type=number], input[type=text] {
       width: 100%;
       padding: 15px 20px;
       border-radius: 12px;
@@ -135,14 +135,14 @@
       font-weight: 500;
     }
 
-    select:focus, input[type=number]:focus {
+    select:focus, input[type=number]:focus, input[type=text]:focus {
       border-color: rgba(220, 38, 127, .6);
       box-shadow: 0 0 25px rgba(220, 38, 127, .4);
       background: linear-gradient(135deg, rgba(220, 38, 127, .3), rgba(185, 28, 28, .3));
       transform: scale(1.02);
     }
 
-    select:hover, input[type=number]:hover {
+    select:hover, input[type=number]:hover, input[type=text]:hover {
       border-color: rgba(220, 38, 127, .5);
       background: linear-gradient(135deg, rgba(220, 38, 127, .25), rgba(185, 28, 28, .25));
     }
@@ -153,7 +153,7 @@
       padding: 10px;
     }
 
-    input[type=number]::placeholder {
+    input[type=number]::placeholder, input[type=text]::placeholder {
       color: rgba(255, 255, 255, .7);
     }
 
@@ -410,6 +410,18 @@
       </label>
     </div>
 
+    <div class="setting-group">
+      <label for="searchInput">
+        <i class="bi bi-search"></i> Test Search:
+      </label>
+      <div style="display: flex; gap: 10px;">
+        <input type="text" id="searchInput" placeholder="Enter search query..." style="flex: 1;" />
+        <button id="searchBtn" style="flex: 0 0 auto; width: auto; padding: 15px 20px; background: linear-gradient(135deg, #dc2626, #b91c1c);">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+    </div>
+
     <div class="button-group">
       <button class="save-btn" id="saveBtn">
         <i class="bi bi-check-circle"></i>
@@ -444,6 +456,8 @@
       saveBtn: document.getElementById('saveBtn'),
       testBtn: document.getElementById('testBtn'),
       backBtn: document.getElementById('backBtn'),
+      searchInput: document.getElementById('searchInput'),
+      searchBtn: document.getElementById('searchBtn'),
       dynamicFavicon: document.getElementById('dynamicFavicon'),
       successMessage: document.getElementById('successMessage'),
       currentCloak: document.getElementById('currentCloak'),
@@ -678,11 +692,46 @@
       }, 5000);
     }
 
+    // Search functionality
+    const searchEngines = {
+      duckduckgo: 'https://duckduckgo.com/?q=',
+      google: 'https://www.google.com/search?q=',
+      bing: 'https://www.bing.com/search?q=',
+      startpage: 'https://www.startpage.com/do/dsearch?query=',
+      brave: 'https://search.brave.com/search?q=',
+      yandex: 'https://yandex.com/search/?text='
+    };
+
+    function performSearch() {
+      const query = elements.searchInput.value.trim();
+      if (!query) {
+        alert('Please enter a search query');
+        return;
+      }
+
+      const searchEngine = settings.searchEngine || 'duckduckgo';
+      const searchUrl = searchEngines[searchEngine] + encodeURIComponent(query);
+      
+      if (settings.blankMode) {
+        window.open(searchUrl, '_blank');
+      } else {
+        window.location.href = searchUrl;
+      }
+    }
+
     // Event listeners
     elements.saveBtn.addEventListener('click', saveSettings);
     elements.testBtn.addEventListener('click', testSettings);
     elements.backBtn.addEventListener('click', () => {
       alert('In a real implementation, this would navigate back to the main Ruby page');
+    });
+
+    // Search functionality
+    elements.searchBtn.addEventListener('click', performSearch);
+    elements.searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        performSearch();
+      }
     });
 
     // Real-time updates for immediate visual feedback
