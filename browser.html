@@ -1,1 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quantum Browser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+<style>
+* {margin:0;padding:0;box-sizing:border-box;}
+body {
+  font-family:'Inter',sans-serif;
+  background: radial-gradient(circle at 20% 80%, rgba(38, 220, 255, .3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(0, 28, 185, .4) 0%, transparent 50%), linear-gradient(135deg,#000a0a 0%,#003366 100%);
+  color:#fff;height:100vh;overflow:hidden;animation:bg 8s ease-in-out infinite alternate;
+}
+@keyframes bg {0%{filter:brightness(1);}50%{filter:brightness(1.1);}100%{filter:brightness(1.05);}}
+body::before {
+  content:'';
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.1), transparent), radial-gradient(2px 2px at 40px 70px, rgba(38, 220, 255,.2), transparent);
+  background-size:200px 100px;animation:particles 20s linear infinite;pointer-events:none;z-index:1;
+}
+@keyframes particles {0%{transform:translateY(0px);}100%{transform:translateY(-1000px);opacity:0;}}
+.topBar {
+  position:fixed;top:0;left:0;right:0;height:60px;
+  background: linear-gradient(135deg, rgba(0,0,0,.95), rgba(0,0,38,.95));
+  backdrop-filter: blur(20px);border-bottom:1px solid rgba(38,220,255,.3);
+  display:flex;align-items:center;padding:0 20px;gap:15px;z-index:998;
+}
+#searchForm {display:flex;flex:1;max-width:600px;gap:10px;}
+#urlInput {
+  padding:10px 20px;font-size:14px;border:none;border-radius:30px;
+  background: linear-gradient(135deg, rgba(38,220,255,.2), rgba(0,28,185,.2));
+  border:1px solid rgba(38,220,255,.3);color:white;flex:1;transition:.3s;font-weight:500;
+}
+#urlInput:focus {outline:none;border-color:rgba(38,220,255,.6);box-shadow:0 0 25px rgba(38,220,255,.4);}
+#urlInput::placeholder {color:rgba(255,255,255,.7);}
+.search-btn {
+  background: linear-gradient(135deg, #26dcff, #1cb9f0);color:white;border:none;border-radius:25px;padding:10px 20px;
+  font-size:14px;font-weight:600;cursor:pointer;transition:.3s;display:flex;align-items:center;gap:8px;
+}
+.search-btn:hover {background:linear-gradient(135deg,#1cb9f0,#0b91c7);transform:translateY(-2px);}
 
+.tabs-sidebar {
+  position:fixed;left:0;top:60px;bottom:0;width:250px;
+  background: linear-gradient(180deg, rgba(0,0,0,.95), rgba(0,0,38,.95));
+  backdrop-filter: blur(25px);border-right:1px solid rgba(38,220,255,.3);
+  display:flex;flex-direction:column;z-index:999;
+}
+.tabs-header {padding:20px;border-bottom:1px solid rgba(38,220,255,.2);font-weight:600;font-size:16px;color:#26dcff;}
+.tabs-list {flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.side-tab {
+  background: linear-gradient(135deg, rgba(38,220,255,.15), rgba(0,28,185,.15));
+  border:1px solid rgba(38,220,255,.2);border-radius:12px;padding:10px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;position:relative;overflow:hidden;transition:.3s;
+}
+.side-tab.active {background: linear-gradient(135deg, rgba(38,220,255,.3), rgba(0,28,185,.3));border-color:rgba(38,220,255,.5);}
+.tab-favicon {width:20px;height:20px;background:linear-gradient(135deg,#26dcff,#1cb9f0);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;color:white;flex-shrink:0;}
+.tab-info {flex:1;min-width:0;}
+.tab-title {font-size:13px;font-weight:500;color:rgba(38,220,255,.8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.side-tab.active .tab-title {color:white;font-weight:600;}
+.tab-close {background:none;border:none;color:rgba(38,220,255,.6);cursor:pointer;padding:4px;border-radius:6px;font-size:14px;opacity:0;transition:.2s;flex-shrink:0;}
+.side-tab:hover .tab-close,.side-tab.active .tab-close{opacity:1;}
+.tab-close:hover {background:rgba(38,220,255,.3);color:white;}
+.new-tab-btn {
+  background: linear-gradient(135deg, rgba(38,220,255,.3), rgba(0,28,185,.3));
+  border:1px solid rgba(38,220,255,.4);border-radius:12px;color:#26dcff;font-size:16px;padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:500;transition:.3s;
+}
+.new-tab-btn:hover {background:linear-gradient(135deg, rgba(38,220,255,.5), rgba(0,28,185,.5));color:white;transform:scale(1.02);}
+
+.content-area {position:fixed;top:60px;left:250px;right:0;bottom:0;background:rgba(0,0,0,.1);}
+.tab-content {display:none;width:100%;height:100%;}
+.tab-content.active {display:block;}
+.tab-content iframe {width:100%;height:100%;border:none;border-radius:8px 0 0 0;}
+
+.welcome-screen {display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;background:radial-gradient(ellipse at center, rgba(38,220,255,.1), transparent 60%);}
+.welcome-title {font-size:72px;font-weight:700;background:linear-gradient(135deg,#26dcff,#1cb9f0,#87f5ff,#c0faff);background-clip:text;-webkit-background-clip:text;color:transparent;text-shadow:0 0 30px rgba(38,220,255,.5);margin-bottom:20px;}
+.welcome-subtitle {font-size:20px;color:#87f5ff;margin-bottom:40px;opacity:.9;}
+
+.footer {position:fixed;bottom:0;left:250px;right:0;height:30px;background:linear-gradient(135deg, rgba(0,0,0,.95), rgba(0,0,38,.95));backdrop-filter:blur(20px);border-top:1px solid rgba(38,220,255,.3);display:flex;align-items:center;justify-content:center;font-size:12px;color:#26dcff;font-weight:500;}
+
+::-webkit-scrollbar {width:8px;}
+::-webkit-scrollbar-track {background:rgba(0,0,0,.3);}
+::-webkit-scrollbar-thumb {background:linear-gradient(135deg,#26dcff,#1cb9f0);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover {background:linear-gradient(135deg,#1cb9f0,#0b91c7);}
+</style>
+</head>
+<body>
+<div class="tabs-sidebar">
+  <div class="tabs-header">Quantum Tabs</div>
+  <div class="tabs-list" id="tabs-list"></div>
+  <button class="new-tab-btn" onclick="createNewTab()"><i class="bi bi-plus"></i> New Tab</button>
+</div>
+
+<div class="topBar">
+  <form id="searchForm">
+    <input type="text" id="urlInput" placeholder="Enter URL or search..." autocomplete="off"/>
+    <button type="submit" class="search-btn"><i class="bi bi-search"></i> Search</button>
+  </form>
+</div>
+
+<div class="content-area">
+  <div id="tab-contents"></div>
+</div>
+
+<div class="footer">Quantum Browser | Advanced Proxy</div>
+
+<script src="/active/uv/uv.bundle.js" defer></script>
+<script src="/active/uv/uv.config.js" defer></script>
+<script>
+let tabs=[],activeTabId=null,tabCounter=0;
+
+function createNewTab(url=null,title='New Tab'){
+  const tabId=`tab-${++tabCounter}`;
+  const tab={id:tabId,title:title,url:url,isHome:!url};
+  tabs.push(tab);
+  renderTabs();
+  createTabContent(tabId);
+  switchToTab(tabId);
+  if(url) loadUrlInTab(tabId,url);
+}
+
+function closeTab(tabId){
+  const index=tabs.findIndex(t=>t.id===tabId);
+  if(index===-1)return;
+  tabs.splice(index,1);
+  document.getElementById(`content-${tabId}`).remove();
+  if(tabs.length===0) createNewTab();
+  else if(activeTabId===tabId) switchToTab(tabs[Math.min(index,tabs.length-1)].id);
+  renderTabs();
+}
+
+function switchToTab(tabId){
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  const tabContent=document.getElementById(`content-${tabId}`);
+  if(tabContent) tabContent.classList.add('active');
+  activeTabId=tabId;
+  renderTabs();
+}
+
+function renderTabs(){
+  const list=document.getElementById('tabs-list');
+  list.innerHTML='';
+  tabs.forEach(tab=>{
+    const t=document.createElement('div');
+    t.className=`side-tab ${tab.id===activeTabId?'active':''}`;
+    const favicon=tab.url?tab.url.charAt(0).toUpperCase():'Q';
+    t.innerHTML=`<div class="tab-favicon">${favicon}</div>
+    <div class="tab-info">
+      <div class="tab-title">${tab.title.length>25?tab.title.substring(0,25)+'...':tab.title}</div>
+    </div>
+    <button class="tab-close" onclick="event.stopPropagation();closeTab('${tab.id}')"><i class="bi bi-x"></i></button>`;
+    t.onclick=e=>{if(!e.target.closest('.tab-close')) switchToTab(tab.id);};
+    list.appendChild(t);
+  });
+}
+
+function createTabContent(tabId){
+  const area=document.getElementById('tab-contents');
+  const content=document.createElement('div');
+  content.id=`content-${tabId}`;
+  content.className='tab-content';
+  const tab=tabs.find(t=>t.id===tabId);
+  content.innerHTML=tab.isHome?`<div class="welcome-screen"><h1 class="welcome-title">Quantum</h1><p class="welcome-subtitle">Advanced Proxy Browser</p></div>`:`<iframe title="Quantum Proxy View"></iframe>`;
+  area.appendChild(content);
+}
+
+function loadUrlInTab(tabId,url){
+  const content=document.getElementById(`content-${tabId}`);
+  const iframe=content.querySelector('iframe');
+  if(iframe){iframe.src=url;const tab=tabs.find(t=>t.id===tabId);if(tab){tab.isHome=false;tab.url=url;}}
+}
+
+function isURL(input){
+  try{
+    const u=new URL(input.includes("://")?input:"https://"+input);
+    return u.hostname.includes(".");
+  }catch{return false;}
+}
+
+function generateURL(query){return `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;}
+
+function searchHandler(e){
+  e.preventDefault();
+  const val=document.getElementById("urlInput").value.trim();
+  if(!val || typeof __uv$config==="undefined") return;
+  let finalUrl="",title=isURL(val)?new URL(val.includes("://")?val:"https://"+val).hostname:`Search: ${val}`;
+  if(isURL(val)) finalUrl=__uv$config.prefix+__uv$config.encodeUrl(val.includes("://")?val:"https://"+val);
+  else finalUrl=__uv$config.prefix+__uv$config.encodeUrl(generateURL(val));
+  if(!activeTabId || tabs.find(t=>t.id===activeTabId).isHome){
+    createNewTab(finalUrl,title);
+  } else {
+    loadUrlInTab(activeTabId,finalUrl);
+    const tab=tabs.find(t=>t.id===activeTabId); if(tab) tab.title=title;
+    renderTabs();
+  }
+  document.getElementById("urlInput").value="";
+}
+
+window.onload=function(){
+  createNewTab();
+  document.getElementById("searchForm").addEventListener("submit",searchHandler);
+};
+</script>
+</body>
+</html>
