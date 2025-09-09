@@ -1,7 +1,6 @@
-# Ruby
-The successor to Auraa.
-
-Forked from [Auraa](https://github.com/creatorcat70/auraa2) which is made by thefakesydney
+# QuantumOS
+A good OS based on Vplaza's OS (I had to cuz they're pedos)
+Made by thefakesydney and ai generated cause whos gonna write allat
 
 
 # Disclaimer
