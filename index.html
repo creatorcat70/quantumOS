@@ -30,6 +30,26 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 .icon-image { width: 42px; height: 42px; background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(99,102,241,0.8)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; box-shadow: 0 4px 20px rgba(59,130,246,0.4); backdrop-filter: blur(10px); }
 .icon-label { color: #e2e8f0; font-size: 11px; font-weight: 500; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 1001;
+}
+.top-bar-left, .top-bar-center, .top-bar-right { display: flex; align-items: center; gap: 15px; }
+.activities-button { background: transparent; border: none; color: white; font-weight: 600; font-size: 14px; padding: 5px 10px; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; }
+.activities-button:hover { background-color: rgba(255, 255, 255, 0.1); }
+#top-bar-clock { font-weight: 500; }
+
 .taskbar { position: fixed; bottom: 10px; left: 0; right: 0; height: 70px; display: flex; justify-content: center; align-items: center; z-index: 1000; pointer-events: none; }
 .dock { display: flex; align-items: center; gap: 10px; padding: 8px; background: rgba(25, 33, 51, 0.5); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); pointer-events: auto; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
@@ -46,17 +66,16 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 .tray-item { background: transparent; border-radius: 8px; padding: 8px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s ease; color: #e2e8f0; }
 .tray-item:hover { background: rgba(255,255,255,0.1); }
 
-.window { position: absolute; background: rgba(15,23,42,0.2); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: none; z-index: 100; min-width: 600px; min-height: 400px; max-width: calc(100vw - 40px); max-height: calc(100vh - 100px); }
+.window { position: absolute; background: #1e1e1e; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: none; z-index: 100; min-width: 600px; min-height: 400px; max-width: calc(100vw - 40px); max-height: calc(100vh - 80px); }
 .window.active { display: flex; flex-direction: column; }
 
-.window-header { height: 45px; background: rgba(255,255,255,0.1); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.15); border-radius: 16px 16px 0 0; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; cursor: move; }
-.window-title { color: #e2e8f0; font-size: 13px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+.window-header { height: 40px; background: #101010; border-bottom: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: space-between; padding: 0 15px; cursor: move; }
+.window-title { color: #e2e8f0; font-size: 13px; font-weight: 600; }
 .window-controls { display: flex; gap: 8px; }
-.window-control { width: 16px; height: 16px; border-radius: 50%; border: none; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px); }
-.minimize { background: linear-gradient(135deg, #facc15, #f59e0b); }
-.maximize { background: linear-gradient(135deg, #22c55e, #16a34a); }
-.close { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.window-control:hover { transform: scale(1.2); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.window-control { width: 14px; height: 14px; border-radius: 50%; border: none; cursor: pointer; transition: all 0.2s ease; }
+.window-control.close { background: #ff5f57; }
+.window-control.minimize, .window-control.maximize { display: none; } /* Hidden to match image */
+.window-control:hover { filter: brightness(1.2); }
 .window-content { flex: 1; padding: 0; overflow: auto; color: #e2e8f0; }
 .app-content { width: 100%; height: 100%; }
 
@@ -65,7 +84,7 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 
 .start-menu {
     position: fixed;
-    bottom: 65px;
+    top: 50px;
     left: 15px;
     width: 280px;
     height: 450px;
@@ -93,6 +112,18 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 </style>
 </head>
 <body>
+<div class="top-bar">
+    <div class="top-bar-left">
+        <button class="activities-button">Activities</button>
+    </div>
+    <div class="top-bar-center">
+        <div id="top-bar-clock"></div>
+    </div>
+    <div class="top-bar-right system-tray">
+        <div class="tray-item" id="wifi"><i class="bi bi-wifi"></i></div>
+        <div class="tray-item" id="battery"><i class="bi bi-battery-full"></i> 100%</div>
+    </div>
+</div>
 <div class="wallpaper"></div>
 
 <div class="desktop">
@@ -119,14 +150,7 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 
 <div class="taskbar">
     <div class="dock">
-        <button class="start-button"><i class="bi bi-grid-3x3-gap"></i></button>
         <div class="taskbar-center" id="taskbar-items"></div>
-        <div class="dock-separator"></div>
-        <div class="system-tray">
-            <div class="tray-item" id="wifi"><i class="bi bi-wifi"></i></div>
-            <div class="tray-item" id="battery"><i class="bi bi-battery-full"></i> 100%</div>
-            <div class="tray-item" id="time"></div>
-        </div>
     </div>
 </div>
 
@@ -159,13 +183,13 @@ const appFiles = {
 // Time update
 function updateTime() {
     const now = new Date();
-    document.getElementById('time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('top-bar-clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 setInterval(updateTime, 1000);
 updateTime();
 
 // Start Menu
-const startButton = document.querySelector('.start-button');
+const activitiesButton = document.querySelector('.activities-button');
 const startMenu = document.getElementById('start-menu');
 
 function toggleStartMenu() {
@@ -187,7 +211,7 @@ function populateStartMenu() {
     }
 }
 
-startButton.addEventListener('click', (e) => {
+activitiesButton.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleStartMenu();
 });
