@@ -55,8 +55,10 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 .maximize { background: linear-gradient(135deg, #22c55e, #16a34a); }
 .close { background: linear-gradient(135deg, #ef4444, #dc2626); }
 .window-control:hover { transform: scale(1.2); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-.window-content { flex: 1; padding: 20px; overflow: auto; color: #e2e8f0; }
+.window-content { flex: 1; padding: 0; overflow: auto; color: #e2e8f0; }
 .app-content { width: 100%; height: 100%; }
+
+.window.maximized { top: 0 !important; left: 0 !important; width: 100vw !important; height: calc(100% - 55px) !important; max-width: 100vw !important; max-height: calc(100% - 55px) !important; border-radius: 0; }
 
 @media (max-width: 1024px) { .desktop-icons { grid-template-columns: repeat(5, 90px); gap: 15px; } .os-title { font-size: 60px; } }
 @media (max-width: 768px) { .desktop-icons { grid-template-columns: repeat(4, 80px); gap: 12px; } .os-title { font-size: 45px; } .window { min-width: calc(100vw - 20px); } .taskbar { height: 50px; padding: 0 15px; } }
@@ -99,24 +101,10 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
     </div>
 </div>
 
-<!-- Generic App Window -->
-<div class="window" id="app-window">
-    <div class="window-header">
-        <span class="window-title" id="app-title">Application</span>
-        <div class="window-controls">
-            <button class="window-control minimize" onclick="minimizeWindow('app-window')"></button>
-            <button class="window-control maximize" onclick="maximizeWindow('app-window')"></button>
-            <button class="window-control close" onclick="closeWindow('app-window')"></button>
-        </div>
-    </div>
-    <div class="window-content">
-        <div class="app-content" id="app-content"></div>
-    </div>
-</div>
-
 <script>
-let openWindows = [];
+let openWindows = {};
 let windowZIndex = 100;
+let windowCounter = 0;
 
 // Time update
 function updateTime() {
@@ -127,11 +115,7 @@ setInterval(updateTime, 1000); updateTime();
 
 // Open apps
 function openApp(appName) {
-    const win = document.getElementById('app-window');
-    const title = document.getElementById('app-title');
-    const content = document.getElementById('app-content');
-
-    title.textContent = `QuantumOS ${appName.charAt(0).toUpperCase()+appName.slice(1)}`;
+    const windowId = `${appName}-window-${++windowCounter}`;
 
     const appFiles = {
         terminal: 'terminal.html',
@@ -148,22 +132,146 @@ function openApp(appName) {
         browser: 'quantum-browser.html'
     };
 
-    if(appFiles[appName]){
-        content.innerHTML = `<iframe src="${appFiles[appName]}" style="width:100%; height:100%; border:none; border-radius:12px;"></iframe>`;
+    const win = document.createElement('div');
+    win.id = windowId;
+    win.className = 'window active';
+    win.style.zIndex = ++windowZIndex;
+
+    const x = Math.floor(Math.random() * (window.innerWidth - 600));
+    const y = Math.floor(Math.random() * (window.innerHeight - 400 - 55));
+    win.style.left = `${x}px`;
+    win.style.top = `${y}px`;
+
+    const header = document.createElement('div');
+    header.className = 'window-header';
+
+    const title = document.createElement('span');
+    title.className = 'window-title';
+    title.textContent = `QuantumOS ${appName.charAt(0).toUpperCase() + appName.slice(1)}`;
+
+    const controls = document.createElement('div');
+    controls.className = 'window-controls';
+
+    const minimizeBtn = document.createElement('button');
+    minimizeBtn.className = 'window-control minimize';
+    minimizeBtn.onclick = () => minimizeWindow(windowId);
+
+    const maximizeBtn = document.createElement('button');
+    maximizeBtn.className = 'window-control maximize';
+    maximizeBtn.onclick = () => maximizeWindow(windowId);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'window-control close';
+    closeBtn.onclick = () => closeWindow(windowId);
+
+    controls.append(minimizeBtn, maximizeBtn, closeBtn);
+    header.append(title, controls);
+
+    const content = document.createElement('div');
+    content.className = 'window-content';
+
+    const appContent = document.createElement('div');
+    appContent.className = 'app-content';
+
+    if (appFiles[appName]) {
+        appContent.innerHTML = `<iframe src="${appFiles[appName]}" style="width:100%; height:100%; border:none;"></iframe>`;
     } else {
-        content.innerHTML = `<p>${appName} app content here</p>`;
+        appContent.innerHTML = `<p>${appName} app content here</p>`;
     }
 
-    win.style.display = 'flex';
-    win.style.zIndex = ++windowZIndex;
-    win.classList.add('active');
-    if(!openWindows.includes('app-window')) openWindows.push('app-window');
+    content.appendChild(appContent);
+    win.append(header, content);
+
+    document.querySelector('.desktop').appendChild(win);
+    openWindows[windowId] = win;
+
+    win.addEventListener('mousedown', () => focusWindow(windowId));
+
+    const taskbarItem = document.createElement('div');
+    taskbarItem.className = 'taskbar-item';
+    taskbarItem.textContent = appName.charAt(0).toUpperCase() + appName.slice(1);
+    taskbarItem.id = `taskbar-item-${windowId}`;
+    taskbarItem.onclick = () => {
+        const win = document.getElementById(windowId);
+        if (win.style.display === 'none') {
+            win.style.display = 'flex';
+        }
+        focusWindow(windowId);
+    };
+    document.getElementById('taskbar-items').appendChild(taskbarItem);
+
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    header.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('window-control')) return;
+        isDragging = true;
+        offsetX = e.clientX - win.offsetLeft;
+        offsetY = e.clientY - win.offsetTop;
+        focusWindow(windowId);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            let newX = e.clientX - offsetX;
+            let newY = e.clientY - offsetY;
+
+            const taskbarHeight = 55;
+            if (newX < 0) newX = 0;
+            if (newY < 0) newY = 0;
+            if (newX + win.offsetWidth > window.innerWidth) newX = window.innerWidth - win.offsetWidth;
+            if (newY + win.offsetHeight > window.innerHeight - taskbarHeight) newY = window.innerHeight - taskbarHeight - win.offsetHeight;
+
+            win.style.left = `${newX}px`;
+            win.style.top = `${newY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
 }
 
-// Window controls
-function closeWindow(id){document.getElementById(id).style.display='none';}
-function minimizeWindow(id){document.getElementById(id).style.display='none';}
-function maximizeWindow(id){ /* optional maximize logic */ }
+function focusWindow(id) {
+    const win = document.getElementById(id);
+    if (win) {
+        win.style.zIndex = ++windowZIndex;
+    }
+}
+
+function closeWindow(id) {
+    const win = document.getElementById(id);
+    if (win) {
+        win.remove();
+        delete openWindows[id];
+    }
+    const taskbarItem = document.getElementById(`taskbar-item-${id}`);
+    if (taskbarItem) {
+        taskbarItem.remove();
+    }
+}
+
+function minimizeWindow(id) {
+    const win = document.getElementById(id);
+    if (win) {
+        win.style.display = 'none';
+    }
+}
+
+function maximizeWindow(id) {
+    const win = document.getElementById(id);
+    if (win) {
+        if (win.classList.contains('maximized')) {
+            win.classList.remove('maximized');
+            win.style.left = win.dataset.originalLeft;
+            win.style.top = win.dataset.originalTop;
+        } else {
+            win.dataset.originalLeft = win.style.left;
+            win.dataset.originalTop = win.style.top;
+            win.classList.add('maximized');
+        }
+    }
+}
 </script>
 </body>
 </html>
