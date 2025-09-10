@@ -1,179 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Settings | Ruby</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #1a0000, #330000);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-
-    h1 {
-      font-size: 3rem;
-      background: linear-gradient(to right, #ff0033, #ff0000, #cc0000);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 10px red;
-    }
-
-    .setting-group {
-      background: rgba(255, 0, 0, 0.1);
-      border: 1px solid red;
-      border-radius: 12px;
-      padding: 1.2rem 2rem;
-      margin-bottom: 1.5rem;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-size: 1rem;
-    }
-
-    select, input[type="number"] {
-      width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      background: #1a1a1a;
-      color: white;
-      border: 1px solid #cc0000;
-      border-radius: 6px;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 0.5rem;
-    }
-
-    .save-button {
-      background: #cc0000;
-      color: white;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-top: 1.5rem;
-    }
-
-    .save-button:hover {
-      background: #ff1a1a;
-    }
-
-    .footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      opacity: 0.6;
-    }
-
-    .success {
-      color: lightgreen;
-      margin-top: 1rem;
-      font-size: 1rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="assets/css/apps.css">
+    <style>
+        .setting-category {
+            margin-bottom: 30px;
+        }
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        label {
+            font-weight: 500;
+        }
+        select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Ruby Settings</h1>
+    <div class="app-container">
+        <h1>Settings</h1>
 
-  <div class="setting-group">
-    <label for="cloakSelect">Cloaking Style</label>
-    <select id="cloakSelect">
-      <option value="default">Default</option>
-      <option value="drive">Google Drive</option>
-      <option value="classroom">Google Classroom</option>
-      <option value="docs">Google Docs</option>
-      <option value="gmail">Gmail</option>
-    </select>
+        <div class="setting-category">
+            <h2>Appearance</h2>
+            <div class="setting">
+                <label for="theme-select">Theme</label>
+                <select id="theme-select">
+                    <option value="dark">Quantum Dark</option>
+                    <option value="light" disabled>Quantum Light (Coming Soon)</option>
+                </select>
+            </div>
+            <div class="setting">
+                <label for="wallpaper-select">Wallpaper</label>
+                <select id="wallpaper-select">
+                    <option value="default">Default</option>
+                    <option value="stars" disabled>Stars (Coming Soon)</option>
+                    <option value="nebula" disabled>Nebula (Coming Soon)</option>
+                </select>
+            </div>
+        </div>
 
-    <label for="searchEngineSelect">Search Engine</label>
-    <select id="searchEngineSelect">
-      <option value="https://www.google.com/search?q=">Google</option>
-      <option value="https://www.bing.com/search?q=">Bing</option>
-      <option value="https://duckduckgo.com/?q=" selected>DuckDuckGo</option>
-      <option value="https://search.brave.com/search?q=">Brave</option>
-    </select>
+        <div class="setting-category">
+            <h2>About</h2>
+            <div class="setting">
+                <label>Version</label>
+                <span>1.0.0</span>
+            </div>
+            <div class="setting">
+                <label>Credits</label>
+                <span>Built with love by the community.</span>
+            </div>
+        </div>
 
-    <label for="particleCountInput">Particle Count</label>
-    <input type="number" id="particleCountInput" min="0" max="1000" step="10" value="100" />
+        <button onclick="saveSettings()">Save Settings</button>
+    </div>
 
-    <label>
-      <input type="checkbox" id="blankModeToggle" />
-      Enable about:blank Cloaking
-    </label>
-
-    <label>
-      <input type="checkbox" id="animationsToggle" checked />
-      Enable Animations
-    </label>
-
-    <label>
-      <input type="checkbox" id="particlesToggle" checked />
-      Enable Particles
-    </label>
-  </div>
-
-  <button class="save-button" onclick="saveSettings()">Save Settings</button>
-  <div class="success" id="saveMessage" style="display: none;">✅ Settings saved!</div>
-
-  <div class="footer">These settings will be applied across Ruby.</div>
-
-  <script>
-    const elements = {
-      cloakSelect: document.getElementById("cloakSelect"),
-      searchEngineSelect: document.getElementById("searchEngineSelect"),
-      particleCountInput: document.getElementById("particleCountInput"),
-      blankModeToggle: document.getElementById("blankModeToggle"),
-      animationsToggle: document.getElementById("animationsToggle"),
-      particlesToggle: document.getElementById("particlesToggle"),
-      saveMessage: document.getElementById("saveMessage")
-    };
-
-    function loadSettings() {
-      const stored = localStorage.getItem("rubySettings");
-      const settings = stored ? JSON.parse(stored) : {};
-
-      elements.cloakSelect.value = settings.cloak || "default";
-      elements.searchEngineSelect.value = settings.searchEngine || "https://duckduckgo.com/?q=";
-      elements.particleCountInput.value = settings.particleCount ?? 100;
-      elements.blankModeToggle.checked = settings.blankMode ?? false;
-      elements.animationsToggle.checked = settings.animations ?? true;
-      elements.particlesToggle.checked = settings.particles ?? true;
-    }
-
-    function saveSettings() {
-      const settings = {
-        cloak: elements.cloakSelect.value,
-        searchEngine: elements.searchEngineSelect.value,
-        particleCount: parseInt(elements.particleCountInput.value),
-        blankMode: elements.blankModeToggle.checked,
-        animations: elements.animationsToggle.checked,
-        particles: elements.particlesToggle.checked
-      };
-
-      localStorage.setItem("rubySettings", JSON.stringify(settings));
-      elements.saveMessage.style.display = "block";
-      setTimeout(() => {
-        elements.saveMessage.style.display = "none";
-      }, 3000);
-    }
-
-    loadSettings();
-  </script>
+    <script>
+        function saveSettings() {
+            // Placeholder for save logic
+            alert('Settings saved (placeholder)!');
+        }
+    </script>
 </body>
 </html>

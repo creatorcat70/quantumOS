@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes</title>
+    <link rel="stylesheet" href="assets/css/apps.css">
+    <style>
+        .notes-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px); /* Full viewport height minus body padding */
+        }
+        textarea {
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="notes-container">
+        <h1>Notes</h1>
+        <textarea id="notes-area" placeholder="Write your notes here..."></textarea>
+        <div class="button-group">
+            <button onclick="saveNotes()">Save Notes</button>
+            <button onclick="clearNotes()">Clear Notes</button>
+        </div>
+    </div>
 
+    <script>
+        const notesArea = document.getElementById('notes-area');
+
+        // Load saved notes on startup
+        function loadNotes() {
+            const savedNotes = localStorage.getItem('quantumos-notes');
+            if (savedNotes) {
+                notesArea.value = savedNotes;
+            }
+        }
+
+        // Save notes to local storage
+        function saveNotes() {
+            localStorage.setItem('quantumos-notes', notesArea.value);
+            alert('Notes saved!');
+        }
+
+        // Clear notes from text area and local storage
+        function clearNotes() {
+            if (confirm('Are you sure you want to clear all notes?')) {
+                notesArea.value = '';
+                localStorage.removeItem('quantumos-notes');
+            }
+        }
+
+        loadNotes();
+    </script>
+</body>
+</html>
