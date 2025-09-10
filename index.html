@@ -30,19 +30,21 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 .icon-image { width: 42px; height: 42px; background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(99,102,241,0.8)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; box-shadow: 0 4px 20px rgba(59,130,246,0.4); backdrop-filter: blur(10px); }
 .icon-label { color: #e2e8f0; font-size: 11px; font-weight: 500; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-.taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 55px; background: rgba(15,23,42,0.3); backdrop-filter: blur(30px); border-top: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 1000; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
-.taskbar-left { display: flex; align-items: center; gap: 15px; }
-.start-button { background: linear-gradient(135deg, rgba(59,130,246,0.8), rgba(99,102,241,0.8)); border: none; border-radius: 12px; color: white; font-size: 18px; padding: 10px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(59,130,246,0.4); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-.start-button:hover { background: linear-gradient(135deg, rgba(59,130,246,1), rgba(99,102,241,1)); transform: scale(1.05); box-shadow: 0 6px 25px rgba(59,130,246,0.6); }
+.taskbar { position: fixed; bottom: 10px; left: 0; right: 0; height: 70px; display: flex; justify-content: center; align-items: center; z-index: 1000; pointer-events: none; }
+.dock { display: flex; align-items: center; gap: 10px; padding: 8px; background: rgba(25, 33, 51, 0.5); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); pointer-events: auto; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-.taskbar-center { flex: 1; display: flex; justify-content: center; align-items: center; gap: 8px; max-width: 600px; overflow-x: auto; padding: 0 20px; }
-.taskbar-item { background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 12px; color: #e2e8f0; font-size: 12px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; min-width: 80px; text-align: center; }
-.taskbar-item:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.start-button { background: transparent; border: none; border-radius: 12px; color: white; font-size: 24px; padding: 10px; cursor: pointer; transition: all 0.3s ease; }
+.start-button:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
 
-.taskbar-right { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #e2e8f0; }
+.taskbar-center { display: flex; align-items: center; gap: 8px; }
+.taskbar-item { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 15px; color: #e2e8f0; font-size: 12px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+.taskbar-item:hover { background: rgba(59,130,246,0.5); transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(59,130,246,0.4); }
+
+.dock-separator { width: 1px; height: 30px; background-color: rgba(255,255,255,0.2); margin: 0 5px; }
+
 .system-tray { display: flex; align-items: center; gap: 8px; }
-.tray-item { background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer; transition: all 0.3s ease; }
-.tray-item:hover { background: rgba(255,255,255,0.2); box-shadow: 0 2px 10px rgba(59,130,246,0.3); }
+.tray-item { background: transparent; border-radius: 8px; padding: 8px 10px; font-size: 12px; cursor: pointer; transition: all 0.3s ease; color: #e2e8f0; }
+.tray-item:hover { background: rgba(255,255,255,0.1); }
 
 .window { position: absolute; background: rgba(15,23,42,0.2); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); display: none; z-index: 100; min-width: 600px; min-height: 400px; max-width: calc(100vw - 40px); max-height: calc(100vh - 100px); }
 .window.active { display: flex; flex-direction: column; }
@@ -59,6 +61,32 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 .app-content { width: 100%; height: 100%; }
 
 .window.maximized { top: 0 !important; left: 0 !important; width: 100vw !important; height: calc(100% - 55px) !important; max-width: 100vw !important; max-height: calc(100% - 55px) !important; border-radius: 0; }
+.resize-handle { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; cursor: se-resize; }
+
+.start-menu {
+    position: fixed;
+    bottom: 65px;
+    left: 15px;
+    width: 280px;
+    height: 450px;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.6);
+    z-index: 2000;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.start-menu.active { display: flex; }
+.start-menu-apps { padding: 10px; overflow-y: auto; }
+.start-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; cursor: pointer; color: #e2e8f0; transition: all 0.2s; }
+.start-menu-item:hover { background-color: rgba(255, 255, 255, 0.1); transform: translateX(5px); }
+.start-menu-item i { font-size: 20px; width: 25px; text-align: center; }
 
 @media (max-width: 1024px) { .desktop-icons { grid-template-columns: repeat(5, 90px); gap: 15px; } .os-title { font-size: 60px; } }
 @media (max-width: 768px) { .desktop-icons { grid-template-columns: repeat(4, 80px); gap: 12px; } .os-title { font-size: 45px; } .window { min-width: calc(100vw - 20px); } .taskbar { height: 50px; padding: 0 15px; } }
@@ -90,9 +118,10 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
 </div>
 
 <div class="taskbar">
-    <div class="taskbar-left"><button class="start-button" onclick="alert('Start menu placeholder')"><i class="bi bi-grid-3x3-gap"></i></button></div>
-    <div class="taskbar-center" id="taskbar-items"></div>
-    <div class="taskbar-right">
+    <div class="dock">
+        <button class="start-button"><i class="bi bi-grid-3x3-gap"></i></button>
+        <div class="taskbar-center" id="taskbar-items"></div>
+        <div class="dock-separator"></div>
         <div class="system-tray">
             <div class="tray-item" id="wifi"><i class="bi bi-wifi"></i></div>
             <div class="tray-item" id="battery"><i class="bi bi-battery-full"></i> 100%</div>
@@ -101,36 +130,80 @@ body { font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; backgr
     </div>
 </div>
 
+<div class="start-menu" id="start-menu">
+    <div class="start-menu-apps" id="start-menu-apps">
+        <!-- App list will be populated by JS -->
+    </div>
+</div>
+
 <script>
 let openWindows = {};
 let windowZIndex = 100;
 let windowCounter = 0;
+
+const appFiles = {
+    'Browser': { file: 'quantum-browser.html', icon: 'bi-globe' },
+    'Terminal': { file: 'terminal.html', icon: 'bi-terminal' },
+    'Files': { file: 'files.html', icon: 'bi-folder' },
+    'Games': { file: 'games.html', icon: 'bi-controller' },
+    'AI Assistant': { file: 'ai.html', icon: 'bi-robot' },
+    'Movies': { file: 'movies.html', icon: 'bi-film' },
+    'Music': { file: 'music.html', icon: 'bi-music-note' },
+    'Calculator': { file: 'calculator.html', icon: 'bi-calculator' },
+    'Paint': { file: 'paint.html', icon: 'bi-palette' },
+    'Weather': { file: 'weather.html', icon: 'bi-cloud-sun' },
+    'Settings': { file: 'settings.html', icon: 'bi-gear' },
+    'Notes': { file: 'notes.html', icon: 'bi-journal-text' },
+};
 
 // Time update
 function updateTime() {
     const now = new Date();
     document.getElementById('time').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
-setInterval(updateTime, 1000); updateTime();
+setInterval(updateTime, 1000);
+updateTime();
+
+// Start Menu
+const startButton = document.querySelector('.start-button');
+const startMenu = document.getElementById('start-menu');
+
+function toggleStartMenu() {
+    startMenu.classList.toggle('active');
+}
+
+function populateStartMenu() {
+    const appList = document.getElementById('start-menu-apps');
+    appList.innerHTML = '';
+    for (const appName in appFiles) {
+        const item = document.createElement('div');
+        item.className = 'start-menu-item';
+        item.innerHTML = `<i class="bi ${appFiles[appName].icon}"></i><span>${appName}</span>`;
+        item.addEventListener('click', () => {
+            openApp(appName);
+            toggleStartMenu();
+        });
+        appList.appendChild(item);
+    }
+}
+
+startButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleStartMenu();
+});
+document.addEventListener('click', (e) => {
+    if (!startMenu.contains(e.target) && startMenu.classList.contains('active')) {
+        toggleStartMenu();
+    }
+});
+populateStartMenu();
+
 
 // Open apps
 function openApp(appName) {
-    const windowId = `${appName}-window-${++windowCounter}`;
-
-    const appFiles = {
-        terminal: 'terminal.html',
-        files: 'files.html',
-        games: 'games.html',
-        ai: 'ai.html',
-        movies: 'movies.html',
-        music: 'music.html',
-        calculator: 'calculator.html',
-        paint: 'paint.html',
-        weather: 'weather.html',
-        settings: 'settings.html',
-        notes: 'notes.html',
-        browser: 'quantum-browser.html'
-    };
+    const windowId = `${appName.replace(/\s+/g, '-')}-window-${++windowCounter}`;
+    const appInfo = appFiles[appName];
+    if (!appInfo) return;
 
     const win = document.createElement('div');
     win.id = windowId;
@@ -147,22 +220,22 @@ function openApp(appName) {
 
     const title = document.createElement('span');
     title.className = 'window-title';
-    title.textContent = `QuantumOS ${appName.charAt(0).toUpperCase() + appName.slice(1)}`;
+    title.textContent = `QuantumOS ${appName}`;
 
     const controls = document.createElement('div');
     controls.className = 'window-controls';
 
     const minimizeBtn = document.createElement('button');
     minimizeBtn.className = 'window-control minimize';
-    minimizeBtn.onclick = () => minimizeWindow(windowId);
+    minimizeBtn.addEventListener('click', () => minimizeWindow(windowId));
 
     const maximizeBtn = document.createElement('button');
     maximizeBtn.className = 'window-control maximize';
-    maximizeBtn.onclick = () => maximizeWindow(windowId);
+    maximizeBtn.addEventListener('click', () => maximizeWindow(windowId));
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'window-control close';
-    closeBtn.onclick = () => closeWindow(windowId);
+    closeBtn.addEventListener('click', () => closeWindow(windowId));
 
     controls.append(minimizeBtn, maximizeBtn, closeBtn);
     header.append(title, controls);
@@ -172,15 +245,14 @@ function openApp(appName) {
 
     const appContent = document.createElement('div');
     appContent.className = 'app-content';
-
-    if (appFiles[appName]) {
-        appContent.innerHTML = `<iframe src="${appFiles[appName]}" style="width:100%; height:100%; border:none;"></iframe>`;
-    } else {
-        appContent.innerHTML = `<p>${appName} app content here</p>`;
-    }
+    appContent.innerHTML = `<iframe src="${appInfo.file}" style="width:100%; height:100%; border:none;"></iframe>`;
 
     content.appendChild(appContent);
     win.append(header, content);
+
+    const resizeHandle = document.createElement('div');
+    resizeHandle.className = 'resize-handle';
+    win.appendChild(resizeHandle);
 
     document.querySelector('.desktop').appendChild(win);
     openWindows[windowId] = win;
@@ -189,46 +261,64 @@ function openApp(appName) {
 
     const taskbarItem = document.createElement('div');
     taskbarItem.className = 'taskbar-item';
-    taskbarItem.textContent = appName.charAt(0).toUpperCase() + appName.slice(1);
+    taskbarItem.textContent = appName;
     taskbarItem.id = `taskbar-item-${windowId}`;
-    taskbarItem.onclick = () => {
+    taskbarItem.addEventListener('click', () => {
         const win = document.getElementById(windowId);
         if (win.style.display === 'none') {
             win.style.display = 'flex';
         }
         focusWindow(windowId);
-    };
+    });
     document.getElementById('taskbar-items').appendChild(taskbarItem);
 
+    // Dragging
     let isDragging = false;
-    let offsetX, offsetY;
+    let dragOffsetX, dragOffsetY;
 
     header.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('window-control')) return;
         isDragging = true;
-        offsetX = e.clientX - win.offsetLeft;
-        offsetY = e.clientY - win.offsetTop;
+        dragOffsetX = e.clientX - win.offsetLeft;
+        dragOffsetY = e.clientY - win.offsetTop;
         focusWindow(windowId);
+    });
+
+    // Resizing
+    let isResizing = false;
+    let resizeOriginalWidth, resizeOriginalHeight, resizeOriginalMouseX, resizeOriginalMouseY;
+
+    resizeHandle.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        isResizing = true;
+        resizeOriginalWidth = win.offsetWidth;
+        resizeOriginalHeight = win.offsetHeight;
+        resizeOriginalMouseX = e.clientX;
+        resizeOriginalMouseY = e.clientY;
     });
 
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
-            let newX = e.clientX - offsetX;
-            let newY = e.clientY - offsetY;
-
+            let newX = e.clientX - dragOffsetX;
+            let newY = e.clientY - dragOffsetY;
             const taskbarHeight = 55;
             if (newX < 0) newX = 0;
             if (newY < 0) newY = 0;
             if (newX + win.offsetWidth > window.innerWidth) newX = window.innerWidth - win.offsetWidth;
             if (newY + win.offsetHeight > window.innerHeight - taskbarHeight) newY = window.innerHeight - taskbarHeight - win.offsetHeight;
-
             win.style.left = `${newX}px`;
             win.style.top = `${newY}px`;
+        } else if (isResizing) {
+            const width = resizeOriginalWidth + (e.clientX - resizeOriginalMouseX);
+            const height = resizeOriginalHeight + (e.clientY - resizeOriginalMouseY);
+            if (width > 600) win.style.width = `${width}px`;
+            if (height > 400) win.style.height = `${height}px`;
         }
     });
 
     document.addEventListener('mouseup', () => {
         isDragging = false;
+        isResizing = false;
     });
 }
 
@@ -265,9 +355,13 @@ function maximizeWindow(id) {
             win.classList.remove('maximized');
             win.style.left = win.dataset.originalLeft;
             win.style.top = win.dataset.originalTop;
+            win.style.width = win.dataset.originalWidth;
+            win.style.height = win.dataset.originalHeight;
         } else {
             win.dataset.originalLeft = win.style.left;
             win.dataset.originalTop = win.style.top;
+            win.dataset.originalWidth = win.style.width;
+            win.dataset.originalHeight = win.style.height;
             win.classList.add('maximized');
         }
     }
